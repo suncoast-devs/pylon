@@ -1,11 +1,15 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-ruby '2.5.1'
+ruby "2.5.1"
 
-gem 'rails', '~> 5.2'
+gem "rails", "~> 5.2"
 
-gem 'pg'
-gem 'puma'
-gem 'rack-cors'
+gem "pg"
+gem "puma"
+gem "rack-cors"
 
-gem 'graphql'
+gem "graphql"
+
+group :development do
+  gem "rufo"
+end
