@@ -7,3 +7,5 @@ gem 'rails', '~> 5.2'
 gem 'pg'
 gem 'puma'
 gem 'rack-cors'
+
+gem 'graphql'
