@@ -10,5 +10,13 @@ module Types
     def cohort(id:)
       Cohort.find(id)
     end
+
+    field :cohorts, [CohortType], null: false do
+      description "List all cohorts"
+    end
+
+    def cohorts
+      Cohort.all
+    end
   end
 end
