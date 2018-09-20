@@ -3,7 +3,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     origins '*'
 
     resource '*',
-      headers: :any,
-      methods: [:post, :options]
+             headers: :any,
+             methods: %i[post options]
   end
 end
