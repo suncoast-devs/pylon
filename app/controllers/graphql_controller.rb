@@ -3,9 +3,7 @@ class GraphqlController < ApplicationController
     variables = ensure_hash(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    context = {
- # current_user: current_user,
-      }
+    context = {current_user: current_user}
     result = PylonSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   rescue => e
@@ -14,6 +12,18 @@ class GraphqlController < ApplicationController
   end
 
   private
+
+  def current_user
+    return nil if request.headers["Authorization"].blank?
+    token = request.headers["Authorization"].split(" ").last
+    return nil if token.blank?
+    begin
+      payload, header = *JSONWebToken.verify(token)
+      User.from_auth_hash(payload)
+    rescue JWT::VerificationError
+      nil
+    end
+  end
 
   # Handle form data, JSON body, or a blank value
   def ensure_hash(ambiguous_param)

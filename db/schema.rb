@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 2018_08_21_173848) do
   create_table "users", force: :cascade do |t|
     t.bigint "person_id"
     t.boolean "is_admin"
+    t.string "auth_sub"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_users_on_person_id"

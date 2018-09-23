@@ -9,6 +9,7 @@ gem "puma"
 gem "rack-cors"
 
 gem "graphql"
+gem "jwt"
 
 group :development do
   gem "rufo"

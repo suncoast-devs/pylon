@@ -6,7 +6,8 @@ module Mutations
     field :cohort, Types::CohortType, null: true
     field :errors, [String], null: false
 
-    def resolve(name:, description:)
+    def resolve(name:, description: nil)
+      # puts ctx.inspect
       cohort = Cohort.new(name: name, description: description)
       if cohort.save
         {
