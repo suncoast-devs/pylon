@@ -1,5 +1,5 @@
 module Types
-  class CohortType < Types::BaseObject
+  class Cohort < Types::BaseObject
     description "A group of students enrolled in an Academy program"
 
     field :id, ID, null: false

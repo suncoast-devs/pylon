@@ -50,6 +50,8 @@ GEM
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     graphql (1.8.9)
+    graphql-guard (1.2.1)
+      graphql (>= 1.6.0, < 2)
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
     jwt (2.1.0)
@@ -120,6 +122,7 @@ PLATFORMS
 
 DEPENDENCIES
   graphql
+  graphql-guard
   jwt
   pg
   puma
