@@ -20,7 +20,7 @@ module Types
     end
 
     def cohorts
-      Cohort.all
+      ::Cohort.all
     end
   end
 end
