@@ -8,7 +8,7 @@ class JSONWebToken
                algorithm: "RS256",
                iss: "https://suncoast-devs.auth0.com/",
                verify_iss: true,
-               aud: Rails.application.credentials.auth0_api_audience,
+               aud: 'LQkg1cfeR4aR2NlRsmY17GuUNxUqJnBP', #Rails.application.credentials.auth0_api_audience,
                verify_aud: true) do |header|
       jwks_hash[header["kid"]]
     end

@@ -26,8 +26,8 @@ module Types
     field :invitation, Types::Invitation, null: true do
       description "Find an invitation by ID"
       argument :id, ID, required: true
-      guard -> (obj, args, ctx) { ctx[:current_user].is_admin? }
-      mask -> (ctx) { ctx[:current_user].is_admin? }
+      guard -> (obj, args, ctx) { ctx[:current_user]&.is_admin? }
+      mask -> (ctx) { ctx[:current_user]&.is_admin? }
     end
 
     def invitation(id:)
@@ -36,8 +36,8 @@ module Types
 
     field :invitations, [Types::Invitation], null: false do
       description "List all invitations"
-      guard -> (obj, args, ctx) { ctx[:current_user].is_admin? }
-      mask -> (ctx) { ctx[:current_user].is_admin? }
+      guard -> (obj, args, ctx) { ctx[:current_user]&.is_admin? }
+      mask -> (ctx) { ctx[:current_user]&.is_admin? }
     end
 
     def invitations
