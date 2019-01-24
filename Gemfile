@@ -13,5 +13,6 @@ gem "graphql-guard"
 gem "jwt"
 
 group :development do
+  gem "awesome_print", "~> 1.8"
   gem "rufo"
 end
