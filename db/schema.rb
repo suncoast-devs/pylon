@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_21_173848) do
+ActiveRecord::Schema.define(version: 2018_11_02_152929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,15 @@ ActiveRecord::Schema.define(version: 2018_08_21_173848) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_emails_on_person_id"
+  end
+
+  create_table "invitations", force: :cascade do |t|
+    t.bigint "cohort_id"
+    t.string "name"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cohort_id"], name: "index_invitations_on_cohort_id"
   end
 
   create_table "links", force: :cascade do |t|
@@ -127,6 +136,7 @@ ActiveRecord::Schema.define(version: 2018_08_21_173848) do
   end
 
   add_foreign_key "emails", "people"
+  add_foreign_key "invitations", "cohorts"
   add_foreign_key "notes", "users"
   add_foreign_key "phone_numbers", "people"
   add_foreign_key "student_profiles", "cohorts"
