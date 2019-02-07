@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_02_152929) do
+ActiveRecord::Schema.define(version: 2019_02_05_153823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -111,19 +111,26 @@ ActiveRecord::Schema.define(version: 2018_11_02_152929) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "student_profiles", force: :cascade do |t|
+  create_table "student_enrollments", force: :cascade do |t|
     t.bigint "person_id"
     t.bigint "cohort_id"
     t.bigint "program_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cohort_id"], name: "index_student_enrollments_on_cohort_id"
+    t.index ["person_id"], name: "index_student_enrollments_on_person_id"
+    t.index ["program_id"], name: "index_student_enrollments_on_program_id"
+  end
+
+  create_table "student_profiles", force: :cascade do |t|
+    t.bigint "person_id"
     t.string "status"
     t.boolean "is_looking_for_work"
     t.boolean "is_available_for_freelance"
     t.string "specialty"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cohort_id"], name: "index_student_profiles_on_cohort_id"
     t.index ["person_id"], name: "index_student_profiles_on_person_id"
-    t.index ["program_id"], name: "index_student_profiles_on_program_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -139,8 +146,9 @@ ActiveRecord::Schema.define(version: 2018_11_02_152929) do
   add_foreign_key "invitations", "cohorts"
   add_foreign_key "notes", "users"
   add_foreign_key "phone_numbers", "people"
-  add_foreign_key "student_profiles", "cohorts"
+  add_foreign_key "student_enrollments", "cohorts"
+  add_foreign_key "student_enrollments", "people"
+  add_foreign_key "student_enrollments", "programs"
   add_foreign_key "student_profiles", "people"
-  add_foreign_key "student_profiles", "programs"
   add_foreign_key "users", "people"
 end

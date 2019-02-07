@@ -2,11 +2,21 @@ module Types
   class Query < Types::BaseObject
     description "The query root of the Pylon schema"
 
+    field :me, Types::Person, null: false do
+      description "Your profile and data you can see"
+
+      logged_in!
+    end
+
+    def me
+      context[:current_user].person
+    end
+
     field :cohort, Types::Cohort, null: true do
       description "Find a cohort by ID"
       argument :id, ID, required: true
-      guard -> (obj, args, ctx) { ctx[:current_user].present? }
-      mask -> (ctx) { ctx[:current_user].present? }
+
+      logged_in!
     end
 
     def cohort(id:)
@@ -15,8 +25,8 @@ module Types
 
     field :cohorts, [Types::Cohort], null: false do
       description "List all cohorts"
-      guard -> (obj, args, ctx) { ctx[:current_user].present? }
-      mask -> (ctx) { ctx[:current_user].present? }
+
+      logged_in!
     end
 
     def cohorts
@@ -26,8 +36,8 @@ module Types
     field :invitation, Types::Invitation, null: true do
       description "Find an invitation by ID"
       argument :id, ID, required: true
-      guard -> (obj, args, ctx) { ctx[:current_user]&.is_admin? }
-      mask -> (ctx) { ctx[:current_user]&.is_admin? }
+
+      admin!
     end
 
     def invitation(id:)
@@ -36,8 +46,8 @@ module Types
 
     field :invitations, [Types::Invitation], null: false do
       description "List all invitations"
-      guard -> (obj, args, ctx) { ctx[:current_user]&.is_admin? }
-      mask -> (ctx) { ctx[:current_user]&.is_admin? }
+
+      admin!
     end
 
     def invitations

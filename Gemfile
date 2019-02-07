@@ -12,7 +12,7 @@ gem "graphql"
 gem "graphql-guard"
 gem "jwt"
 
-group :development do
+group :development, :test do
   gem "awesome_print", "~> 1.8"
   gem "rufo"
 end

@@ -1,11 +1,11 @@
 class GraphqlController < ApplicationController
   def execute
-    variables = ensure_hash(params[:variables])
-    query = params[:query]
+    variables      = ensure_hash(params[:variables])
+    query          = params[:query]
     operation_name = params[:operationName]
-    context = {current_user: current_user}
-    result = PylonSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
-    render json: result
+    context        = { current_user: Rails.env.test? ? User.find(params[:user_id]) : current_user }
+
+    render json: PylonSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
   rescue => e
     raise e unless Rails.env.development?
     handle_error_in_development e
@@ -14,14 +14,18 @@ class GraphqlController < ApplicationController
   private
 
   def current_user
-    return nil if request.headers["Authorization"].blank?
-    token = request.headers["Authorization"].split(" ").last
-    return nil if token.blank?
-    begin
-      payload, header = *JSONWebToken.verify(token)
-      User.from_auth_hash(payload)
-    rescue JWT::VerificationError
-      nil
+    @current_user ||= begin
+      return nil if request.headers["Authorization"].blank?
+
+      token = request.headers["Authorization"].split(" ").last
+      return nil if token.blank?
+
+      begin
+        payload, _ = *JSONWebToken.verify(token)
+        User.from_auth_hash(payload)
+      rescue JWT::VerificationError
+        nil
+      end
     end
   end
 

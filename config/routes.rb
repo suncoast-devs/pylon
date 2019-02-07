@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  post "/", to: "graphql#execute"
+  post "/", to: "graphql#execute", as: :query
 end

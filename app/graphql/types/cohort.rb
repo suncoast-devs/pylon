@@ -5,5 +5,8 @@ module Types
     field :id, ID, null: false
     field :name, String, null: false
     field :description, String, null: true
+    field :people, [::Types::Person], null: false do
+      admin!
+    end
   end
 end
