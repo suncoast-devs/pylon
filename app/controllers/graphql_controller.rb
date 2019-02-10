@@ -1,5 +1,7 @@
 class GraphqlController < ApplicationController
   def execute
+    Rails.logger.debug [current_user]
+
     variables      = ensure_hash(params[:variables])
     query          = params[:query]
     operation_name = params[:operationName]
@@ -20,12 +22,11 @@ class GraphqlController < ApplicationController
       token = request.headers["Authorization"].split(" ").last
       return nil if token.blank?
 
-      begin
-        payload, _ = *JSONWebToken.verify(token)
-        User.from_auth_hash(payload)
-      rescue JWT::VerificationError
-        nil
-      end
+      payload, _ = JWT.decode(token, Rails.application.secrets.secret_key_base)
+
+      User.find(payload["sub"])
+    rescue JWT::VerificationError
+      nil
     end
   end
 
