@@ -5,6 +5,7 @@ module Types
     field :id, ID, null: false
     field :given_name, String, null: false
     field :family_name, String, null: false
+    field :full_name, String, null: false
 
     field :links, [Types::Link], null: true
 
