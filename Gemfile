@@ -12,12 +12,22 @@ gem "graphql"
 gem "graphql-guard"
 gem "jwt"
 
-group :development, :test do
-  gem "awesome_print", "~> 1.8"
-  gem "rufo"
-end
-
+# Authentication
 gem "omniauth", "~> 1.9"
 gem "omniauth-github", "~> 1.3"
 
-gem "dotenv-rails", "~> 2.6"
+# Used to download content from the interwebs
+gem "down", "~> 4.8"
+
+# Gems to be used with activestorage
+gem "image_processing", "~> 1.7"
+gem "mini_magick", "~> 4.9"
+
+group :development, :test do
+  gem "awesome_print", "~> 1.8"
+  gem "rufo"
+
+  # Managing environment variables
+  gem "dotenv-rails", "~> 2.6"
+end
+

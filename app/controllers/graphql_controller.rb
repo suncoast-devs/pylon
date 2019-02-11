@@ -1,11 +1,12 @@
 class GraphqlController < ApplicationController
   def execute
-    Rails.logger.debug [current_user]
+    uri = URI.parse(request.original_url)
+    base_url = "#{uri.scheme}://#{uri.host}:#{uri.port}"
 
     variables      = ensure_hash(params[:variables])
     query          = params[:query]
     operation_name = params[:operationName]
-    context        = { current_user: Rails.env.test? ? User.find(params[:user_id]) : current_user }
+    context        = { base_url: base_url, current_user: Rails.env.test? ? User.find(params[:user_id]) : current_user }
 
     render json: PylonSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
   rescue => e

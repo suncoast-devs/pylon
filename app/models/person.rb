@@ -7,4 +7,6 @@ class Person < ApplicationRecord
   has_many :student_enrollments, dependent: :destroy
   has_many :programs, through: :student_enrollments
   has_many :cohorts, through: :student_enrollments
+  
+  has_one_attached :profile_image
 end

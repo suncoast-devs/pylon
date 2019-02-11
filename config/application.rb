@@ -5,6 +5,8 @@ require "active_model/railtie"
 require "active_record/railtie"
 require "action_controller/railtie"
 require "rails/test_unit/railtie"
+require "active_storage/engine"
+require "active_job/railtie"
 
 Bundler.require(*Rails.groups)
 
