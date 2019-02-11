@@ -11,7 +11,7 @@ module ActiveSupport
       given_name = admin ? "Anne" : "Ursula"
       family_name = admin ? "Admin" : "User"
 
-      User.create(person: Person.create(given_name: given_name, family_name: family_name), is_admin: admin, auth_sub: "")
+      User.create(person: Person.create(given_name: given_name, family_name: family_name, full_name: "#{given_name} #{family_name}"), is_admin: admin, auth_sub: "")
     end
 
     def admin_user

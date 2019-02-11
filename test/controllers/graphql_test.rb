@@ -5,12 +5,14 @@ class GraphqlTest < ActionDispatch::IntegrationTest
     user_query query: <<-QUERY
       {
         me {
+          fullName
           givenName
         }
       }
     QUERY
 
     refute result["errors"]
+    assert data["me"]["fullName"]
     assert data["me"]["givenName"]
   end
 
