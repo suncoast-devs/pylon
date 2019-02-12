@@ -1,3 +1,5 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :github, ENV['GITHUB_APP_ID'], ENV['GITHUB_APP_SECRET'], scope: "user,repo,gist"
+  app_id = ENV.fetch('GITHUB_APP_ID', Rails.application.secrets.GITHUB_APP_ID)
+  app_secret = ENV.fetch('GITHUB_APP_SECRET', Rails.application.secrets.GITHUB_APP_SECRET)
+  provider :github, app_id, app_secret, scope: "user,repo,gist"
 end
