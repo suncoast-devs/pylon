@@ -4,7 +4,6 @@ module Types
 
     field :person, [Types::Person]
 
-    field :is_admin, Boolean
-    field :auth_sub, String
+    field :is_admin, Boolean, null: false
   end
 end

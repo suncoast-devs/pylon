@@ -2,8 +2,8 @@ module Types
   class Note < Types::BaseObject
     description "note"
 
-    field :label, String
-    field :message, String
+    field :label, String, null: false
+    field :message, String, null: false
     field :user, [Types::User], null: false
   end
 end
