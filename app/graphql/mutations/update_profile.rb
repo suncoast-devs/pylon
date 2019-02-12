@@ -7,16 +7,16 @@ end
 
 module Mutations
   class UpdateProfile < Mutations::BaseMutation
-    argument :input, Types::ProfileInput, required: true
+    argument :profile, Types::ProfileInput, required: true
 
     field :me, Types::Person, null: true
     field :errors, [String], null: false
 
-    def resolve(input:)
+    def resolve(profile:)
       user = context[:current_user]
       person = user.person
 
-      if person.update(input.to_h)
+      if person.update(profile.to_h)
         {
           me: person,
           errors: []
