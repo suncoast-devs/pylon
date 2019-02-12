@@ -14,13 +14,9 @@ class User < ApplicationRecord
         person.emails.build(label: "github", address: github_email.email, is_primary: github_email.primary)
       end
 
-      begin
-        picture = Down.download(authentication_data.info.image)
-
-        person.profile_image.attach(io: picture, filename: picture.original_filename)
-      rescue Down::Error => exception
-        Rails.logger.info exception
-      end
+      person.save
+      
+      DownloadProfileImageJob.perform_later(person: person, url: authentication_data.info.image)
     end
   end
 end
