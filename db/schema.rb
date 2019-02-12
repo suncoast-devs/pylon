@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_12_001040) do
+ActiveRecord::Schema.define(version: 2019_02_12_194706) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -101,15 +101,15 @@ ActiveRecord::Schema.define(version: 2019_02_12_001040) do
   end
 
   create_table "people", force: :cascade do |t|
-    t.string "given_name"
-    t.string "family_name"
-    t.string "additional_name"
-    t.string "honorific_prefix"
-    t.string "honorific_suffix"
-    t.string "nickname"
-    t.string "full_name"
-    t.string "shirt_size"
-    t.text "dietary_note"
+    t.string "given_name", comment: "The person's first/given name"
+    t.string "family_name", comment: "The person's last/family name"
+    t.string "additional_name", comment: "Any additional name"
+    t.string "honorific_prefix", comment: "Name prefix"
+    t.string "honorific_suffix", comment: "name suffix"
+    t.string "nickname", comment: "Any nickname the person prefers"
+    t.string "full_name", comment: "Full name, typically given + family"
+    t.string "shirt_size", comment: "Shirt size preference"
+    t.text "dietary_note", comment: "Any dietary restrictions or preferences"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

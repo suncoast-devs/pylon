@@ -1,6 +1,8 @@
 class Types::ProfileInput < Types::BaseInputObject
   description "Attributes for creating or updating a Profile"
   argument :full_name, String, required: false
+  argument :given_name, String, required: false
+  argument :family_name, String, required: false
 end
 
 module Mutations
