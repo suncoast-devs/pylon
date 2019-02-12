@@ -18,6 +18,12 @@ module Types
     field :profile_image_url, String, null: true
     field :small_profile_image_url, String, null: true
 
+    field :is_admin, Boolean, null: false
+
+    def is_admin
+      object.user.is_admin
+    end
+    
     def small_profile_image_url
       rails_representation_url(object.profile_image.variant(resize: "32x32", auto_orient: true).processed, host: context[:base_url])
     end
