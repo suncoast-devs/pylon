@@ -3,6 +3,12 @@ class Types::ProfileInput < Types::BaseInputObject
   argument :full_name, String, required: false
   argument :given_name, String, required: false
   argument :family_name, String, required: false
+  argument :additional_name, String, required: false
+  argument :honorific_prefix, String, required: false
+  argument :honorific_suffix, String, required: false
+  argument :nickname, String, required: false
+  argument :shirt_size, String, required: false
+  argument :dietary_note, String, required: false
 end
 
 module Mutations

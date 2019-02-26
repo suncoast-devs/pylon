@@ -9,6 +9,12 @@ module Types
     field :given_name, String, null: true
     field :family_name, String, null: true
     field :full_name, String, null: false
+    field :additional_name, String, null: true
+    field :honorific_prefix, String, null: true
+    field :honorific_suffix, String, null: true
+    field :nickname, String, null: true
+    field :shirt_size, String, null: true
+    field :dietary_note, String, null: true
 
     field :links, [Types::Link], null: true
 
