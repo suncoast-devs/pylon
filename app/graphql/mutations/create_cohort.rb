@@ -1,12 +1,12 @@
 module Mutations
   class CreateCohort < Mutations::BaseMutation
-    argument :input, Types::CohortInput, required: true
+    argument :cohort, Types::CohortInput, required: true
 
     field :cohort, Types::Cohort, null: true
     field :errors, [String], null: false
 
-    def resolve(input:)
-      cohort = Cohort.new(input.to_h)
+    def resolve(cohort:)
+      cohort = Cohort.new(cohort.to_h)
       if cohort.save
         {
           cohort: cohort,

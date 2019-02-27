@@ -12,7 +12,7 @@ module Types
       context[:current_user].person
     end
 
-    field :cohort, Types::Cohort, null: true do
+    field :cohort, Types::Cohort, null: false do
       description "Find a cohort by ID"
       argument :id, ID, required: true
 
@@ -30,7 +30,7 @@ module Types
     end
 
     def cohorts
-      ::Cohort.all
+      ::Cohort.all.order(:name)
     end
 
     field :invitation, Types::Invitation, null: true do
