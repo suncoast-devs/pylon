@@ -12,6 +12,11 @@ gem "graphql"
 gem "graphql-guard"
 gem "jwt"
 
+gem "graphiti"
+gem "vandal_ui"
+gem "kaminari"
+gem "responders"
+
 # Authentication
 gem "omniauth", "~> 1.9"
 gem "omniauth-github", "~> 1.3"
