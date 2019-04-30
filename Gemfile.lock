@@ -105,9 +105,6 @@ GEM
       jsonapi-serializable (~> 0.3.0)
     graphiti_errors (1.0.0)
       jsonapi-serializable (~> 0.1)
-    graphql (1.8.9)
-    graphql-guard (1.2.1)
-      graphql (>= 1.6.0, < 2)
     hashie (3.6.0)
     i18n (1.1.0)
       concurrent-ruby (~> 1.0)
@@ -228,8 +225,6 @@ DEPENDENCIES
   dotenv-rails (~> 2.6)
   down (~> 4.8)
   graphiti
-  graphql
-  graphql-guard
   image_processing (~> 1.7)
   jwt
   kaminari
