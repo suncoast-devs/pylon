@@ -18,6 +18,7 @@ class PersonResource < ApplicationResource
     base_url = "#{uri.scheme}://#{uri.host}:#{uri.port}"
 
     @object.profile_image.attached? && context.rails_representation_url(@object.profile_image.variant(resize: "32x32", auto_orient: true).processed, host: base_url)
+  rescue Aws::S3::Errors::NotFound => ex
   end
 
   attribute :profile_image_url, :string do
@@ -25,5 +26,6 @@ class PersonResource < ApplicationResource
     base_url = "#{uri.scheme}://#{uri.host}:#{uri.port}"
 
     @object.profile_image.attached? && context.rails_representation_url(@object.profile_image.variant(resize: "300x300", auto_orient: true).processed, host: base_url)
+  rescue Aws::S3::Errors::NotFound => ex
   end
 end
