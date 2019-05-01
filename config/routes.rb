@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     resources :profiles
     resources :people
     resources :cohorts
+    resources :units
+    resources :programs
     mount VandalUi::Engine, at: '/vandal'
     # your routes go here
   end
