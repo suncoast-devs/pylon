@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :cohorts
     resources :units
     resources :programs
+    resources :student_enrollments
     mount VandalUi::Engine, at: '/vandal'
     # your routes go here
   end

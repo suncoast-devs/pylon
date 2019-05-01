@@ -4,4 +4,7 @@ class UnitResource < ApplicationResource
 
   belongs_to :program
   belongs_to :cohort
+
+  has_many :student_enrollments
+  many_to_many :people
 end
