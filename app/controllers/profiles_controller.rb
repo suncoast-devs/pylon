@@ -8,4 +8,15 @@ class ProfilesController < ApplicationController
       respond_with([])
     end
   end
+
+  def update
+    person = ProfileResource.find(params)
+
+    if params[:data][:id].to_i == current_user.person_id && person.update_attributes
+      render jsonapi: person
+    else
+      render jsonapi_errors: person
+    end
+  end
+
 end
