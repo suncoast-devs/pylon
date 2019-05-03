@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_01_001724) do
+ActiveRecord::Schema.define(version: 2019_05_02_133358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,11 +52,22 @@ ActiveRecord::Schema.define(version: 2019_05_01_001724) do
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
+  create_table "cohort_dates", force: :cascade do |t|
+    t.bigint "cohort_id"
+    t.date "day"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cohort_id"], name: "index_cohort_dates_on_cohort_id"
+  end
+
   create_table "cohorts", force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "start_date"
+    t.date "end_date"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -176,6 +187,7 @@ ActiveRecord::Schema.define(version: 2019_05_01_001724) do
     t.index ["person_id"], name: "index_users_on_person_id"
   end
 
+  add_foreign_key "cohort_dates", "cohorts"
   add_foreign_key "emails", "people"
   add_foreign_key "invitations", "cohorts"
   add_foreign_key "notes", "users"
