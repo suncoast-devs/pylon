@@ -9,6 +9,10 @@ class Person < ApplicationRecord
   has_many :cohorts, through: :student_enrollments
 
   has_one :user
+  has_many :units, through: :student_enrollments
+  has_many :cohorts, through: :units
+
+  has_many :attendance_records
 
   has_one_attached :profile_image
 end

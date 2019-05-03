@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_02_133358) do
+ActiveRecord::Schema.define(version: 2019_05_03_140622) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,17 @@ ActiveRecord::Schema.define(version: 2019_05_02_133358) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
+  end
+
+  create_table "attendance_records", force: :cascade do |t|
+    t.bigint "person_id"
+    t.bigint "cohort_date_id"
+    t.string "status", limit: 1
+    t.string "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cohort_date_id"], name: "index_attendance_records_on_cohort_date_id"
+    t.index ["person_id"], name: "index_attendance_records_on_person_id"
   end
 
   create_table "cohort_dates", force: :cascade do |t|
@@ -187,6 +198,8 @@ ActiveRecord::Schema.define(version: 2019_05_02_133358) do
     t.index ["person_id"], name: "index_users_on_person_id"
   end
 
+  add_foreign_key "attendance_records", "cohort_dates"
+  add_foreign_key "attendance_records", "people"
   add_foreign_key "cohort_dates", "cohorts"
   add_foreign_key "emails", "people"
   add_foreign_key "invitations", "cohorts"

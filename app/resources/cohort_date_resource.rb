@@ -7,4 +7,5 @@ class CohortDateResource < ApplicationResource
   attribute :updated_at, :datetime, writable: false
 
   belongs_to :cohort
+  has_many :attendance_records
 end

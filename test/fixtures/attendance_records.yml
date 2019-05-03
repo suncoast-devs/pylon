@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  person: one
+  cohort_date: one
+  status: 
+  note: MyString
+
+two:
+  person: two
+  cohort_date: two
+  status: 
+  note: MyString
