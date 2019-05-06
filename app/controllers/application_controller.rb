@@ -9,6 +9,12 @@ class ApplicationController < ActionController::API
     handle_exception(e)
   end
 
+  def ensure_admin
+    unless current_user && current_user.is_admin?
+      render status: 401, json: { error: "You must be an admin" }
+    end
+  end
+
   def current_user
     @current_user ||= begin
       return nil if request.headers["Authorization"].blank?
