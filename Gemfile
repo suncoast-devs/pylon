@@ -36,4 +36,4 @@ group :development, :test do
 end
 
 # For interacting with AWS
-gem "aws-sdk-s3", require: false
+gem "aws-sdk-s3"
