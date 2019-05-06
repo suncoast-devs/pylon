@@ -1,7 +1,8 @@
 class StudentEnrollmentResource < ApplicationResource
-  attribute :unit_id, :integer
+  attribute :cohort_id, :integer
   attribute :person_id, :integer
+  attribute :units, :array
 
-  belongs_to :unit
+  belongs_to :cohort
   belongs_to :person
 end

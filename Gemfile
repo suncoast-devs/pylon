@@ -28,6 +28,7 @@ gem "mini_magick", "~> 4.9"
 
 group :development, :test do
   gem "awesome_print", "~> 1.8"
+  gem "rails-erd", "~> 1.5"
   gem "rufo"
 
   # Managing environment variables

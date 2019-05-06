@@ -5,12 +5,9 @@ class Person < ApplicationRecord
   has_many :links, dependent: :destroy, as: :linkable
   has_one  :student_profile, dependent: :destroy
   has_many :student_enrollments, dependent: :destroy
-  has_many :programs, through: :student_enrollments
   has_many :cohorts, through: :student_enrollments
 
   has_one :user
-  has_many :units, through: :student_enrollments
-  has_many :cohorts, through: :units
 
   has_many :attendance_records
 

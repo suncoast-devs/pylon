@@ -6,6 +6,7 @@ class CohortResource < ApplicationResource
 
   has_many :units
   has_many :cohort_dates
-  many_to_many :attendance_records
+  has_many :student_enrollments
+
   many_to_many :people
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_03_140622) do
+ActiveRecord::Schema.define(version: 2019_05_05_130543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,8 @@ ActiveRecord::Schema.define(version: 2019_05_03_140622) do
     t.datetime "updated_at", null: false
     t.date "start_date"
     t.date "end_date"
+    t.bigint "program_id"
+    t.index ["program_id"], name: "index_cohorts_on_program_id"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -159,10 +161,9 @@ ActiveRecord::Schema.define(version: 2019_05_03_140622) do
     t.bigint "cohort_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "unit_id"
+    t.integer "units", default: [], array: true
     t.index ["cohort_id"], name: "index_student_enrollments_on_cohort_id"
     t.index ["person_id"], name: "index_student_enrollments_on_person_id"
-    t.index ["unit_id"], name: "index_student_enrollments_on_unit_id"
   end
 
   create_table "student_profiles", force: :cascade do |t|
@@ -177,11 +178,10 @@ ActiveRecord::Schema.define(version: 2019_05_03_140622) do
   end
 
   create_table "units", force: :cascade do |t|
-    t.bigint "cohort_id"
     t.bigint "program_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["cohort_id"], name: "index_units_on_cohort_id"
+    t.string "title"
     t.index ["program_id"], name: "index_units_on_program_id"
   end
 
@@ -201,15 +201,14 @@ ActiveRecord::Schema.define(version: 2019_05_03_140622) do
   add_foreign_key "attendance_records", "cohort_dates"
   add_foreign_key "attendance_records", "people"
   add_foreign_key "cohort_dates", "cohorts"
+  add_foreign_key "cohorts", "programs"
   add_foreign_key "emails", "people"
   add_foreign_key "invitations", "cohorts"
   add_foreign_key "notes", "users"
   add_foreign_key "phone_numbers", "people"
   add_foreign_key "student_enrollments", "cohorts"
   add_foreign_key "student_enrollments", "people"
-  add_foreign_key "student_enrollments", "units"
   add_foreign_key "student_profiles", "people"
-  add_foreign_key "units", "cohorts"
   add_foreign_key "units", "programs"
   add_foreign_key "users", "people"
 end

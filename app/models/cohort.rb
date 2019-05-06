@@ -1,7 +1,9 @@
 class Cohort < ApplicationRecord
-  has_many :units
-  has_many :programs, through: :units
-  has_many :people, through: :units
+  belongs_to :program
+  has_many :units, through: :program
+
+  has_many :student_enrollments
+  has_many :people, through: :student_enrollments
 
   has_many :cohort_dates
   has_many :attendance_records, through: :cohort_dates

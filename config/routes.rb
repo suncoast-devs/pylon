@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     # your routes go here
   end
 
+  get '/foo' => 'vandal_ui/schemas#show'
+
   get    '/auth/:provider'          => 'omniauth#auth',  as: :auth
   get    '/auth/:provider/callback' => 'session#create'
   get    '/auth/failure'            => 'session#failure'
