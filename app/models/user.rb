@@ -1,9 +1,10 @@
 class User < ApplicationRecord
   belongs_to :person, dependent: :destroy
 
+  delegate :profile_image, :needs_profile_image?, to: :person, prefix: false
+
   def self.from_omniauth(authentication_data)
-    User.where(provider: authentication_data['provider'],uid: authentication_data['uid']).first_or_create do |user|
-      Rails.logger.debug ["authentication_data", authentication_data]
+    user = User.where(provider: authentication_data['provider'], uid: authentication_data['uid']).first_or_create do |user|
       person = user.build_person
 
       person.full_name  = authentication_data.info.name
@@ -15,8 +16,7 @@ class User < ApplicationRecord
       end
 
       person.save
-      
-      DownloadProfileImageJob.perform_later(person: person, url: authentication_data.info.image)
+
     end
   end
 end

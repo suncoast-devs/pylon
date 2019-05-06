@@ -4,9 +4,15 @@ class SessionController < ApplicationController
   end
 
   def create
-    current_user = User.from_omniauth(request.env['omniauth.auth'])
+    authentication_data = request.env['omniauth.auth']
+
+    current_user = User.from_omniauth(authentication_data)
 
     if current_user
+      if current_user.needs_profile_image?
+        DownloadProfileImageJob.perform_later(user: current_user, url: authentication_data.info.image)
+      end
+
       callback = request.env['omniauth.params']["callback"]
 
       redirect_to "#{callback}/#{token(current_user)}"

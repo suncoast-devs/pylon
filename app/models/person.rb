@@ -12,4 +12,8 @@ class Person < ApplicationRecord
   has_many :attendance_records
 
   has_one_attached :profile_image
+
+  def needs_profile_image?
+    !profile_image.attached?
+  end
 end

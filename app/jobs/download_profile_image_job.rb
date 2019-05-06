@@ -1,7 +1,9 @@
 class DownloadProfileImageJob < ApplicationJob
   queue_as :default
 
-  def perform(person:, url:)
+  def perform(user: nil, person: nil, url:)
+    person = person || user.person
+
     picture = Down.download(url)
 
     person.profile_image.attach(io: picture, filename: picture.original_filename)

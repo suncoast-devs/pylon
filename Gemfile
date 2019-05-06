@@ -35,6 +35,5 @@ group :development, :test do
   gem "dotenv-rails", "~> 2.6"
 end
 
-group :production do
-  gem "aws-sdk-s3", require: false
-end
+# For interacting with AWS
+gem "aws-sdk-s3", require: false

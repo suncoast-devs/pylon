@@ -18,5 +18,4 @@ class ProfilesController < ApplicationController
       render jsonapi_errors: person
     end
   end
-
 end
