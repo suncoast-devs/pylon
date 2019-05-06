@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   belongs_to :person, dependent: :destroy
 
-  delegate :profile_image, :needs_profile_image?, to: :person, prefix: false
+  delegate :profile_image, :needs_profile_image?, :attendance_records, to: :person, prefix: false
 
   def self.from_omniauth(authentication_data)
     user = User.where(provider: authentication_data['provider'], uid: authentication_data['uid']).first_or_create do |user|
