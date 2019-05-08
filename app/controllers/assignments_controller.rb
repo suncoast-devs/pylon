@@ -1,30 +1,47 @@
 class AssignmentsController < GraphitiResourceController
   def update
-    super
+    saved = false
 
-    assignment = @record.data
-    if assignment.previous_changes.include?(:score)
-      GithubIssueInterface.comment_on_assignment(assignment)
+    ActiveRecord::Base.transaction do
+      @record = self.resource.find(params)
+
+      saved = @record.update_attributes
+
+      assignment = @record.data
+
+      if saved && assignment.previous_changes.include?(:score)
+        GithubIssueInterface.comment_on_assignment(assignment)
+      end
+    end
+
+    if saved
+      render jsonapi: @record
+    else
+      render jsonapi_errors: @jrecord
     end
   end
 
   def create
-    person = Person.find_by(id: params[:data][:attributes][:person_id])
+    saved = false
 
-    existing = Assignment.find_by(person_id: params[:data][:attributes][:person_id], homework_id: params[:data][:attributes][:homework_id])
-    if existing
-      record = self.resource.find(params)
+    ActiveRecord::Base.transaction do
+      person = Person.find_by(id: params[:data][:attributes][:person_id])
 
-      GithubIssueInterface.update(person, existing)
+      existing = Assignment.find_by(person_id: params[:data][:attributes][:person_id], homework_id: params[:data][:attributes][:homework_id])
+      if existing
+        record = self.resource.find(params)
 
-      saved = true
-    else
-      record = self.resource.build(params)
-      saved = record.save
+        GithubIssueInterface.update(person, existing)
 
-      if saved
-        created_assignment = Assignment.find_by(person_id: params[:data][:attributes][:person_id], homework_id: params[:data][:attributes][:homework_id])
-        GithubIssueInterface.create(person, created_assignment)
+        saved = true
+      else
+        record = self.resource.build(params)
+        saved = record.save
+
+        if saved
+          created_assignment = Assignment.find_by(person_id: params[:data][:attributes][:person_id], homework_id: params[:data][:attributes][:homework_id])
+          GithubIssueInterface.create(person, created_assignment)
+        end
       end
     end
 
