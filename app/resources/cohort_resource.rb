@@ -8,6 +8,7 @@ class CohortResource < ApplicationResource
   belongs_to :program
   many_to_many :units
 
+  has_many :homeworks
   has_many :cohort_dates
   has_many :student_enrollments
 

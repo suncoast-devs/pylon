@@ -8,6 +8,8 @@ class Cohort < ApplicationRecord
   has_many :cohort_dates
   has_many :attendance_records, through: :cohort_dates
 
+  has_many :homeworks
+
   validates :name, presence: true, uniqueness: true
 
   after_create_commit :generate_dates
