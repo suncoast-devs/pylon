@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_07_151647) do
+ActiveRecord::Schema.define(version: 2019_05_08_203208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,24 +36,8 @@ ActiveRecord::Schema.define(version: 2019_05_07_151647) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "addresses", force: :cascade do |t|
-    t.string "addressable_type"
-    t.bigint "addressable_id"
-    t.string "label"
-    t.string "street_address"
-    t.string "extended_address"
-    t.string "locality"
-    t.string "region"
-    t.string "postal_code"
-    t.string "country_name"
-    t.string "post_office_box"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
-  end
-
   create_table "assignments", force: :cascade do |t|
-    t.integer "score"
+    t.integer "score", default: 0
     t.integer "issue"
     t.bigint "homework_id"
     t.bigint "person_id"
@@ -86,7 +70,6 @@ ActiveRecord::Schema.define(version: 2019_05_07_151647) do
 
   create_table "cohorts", force: :cascade do |t|
     t.string "name"
-    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "start_date"
@@ -114,15 +97,6 @@ ActiveRecord::Schema.define(version: 2019_05_07_151647) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cohort_id"], name: "index_homeworks_on_cohort_id"
-  end
-
-  create_table "invitations", force: :cascade do |t|
-    t.bigint "cohort_id"
-    t.string "name"
-    t.string "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["cohort_id"], name: "index_invitations_on_cohort_id"
   end
 
   create_table "links", force: :cascade do |t|
@@ -185,6 +159,7 @@ ActiveRecord::Schema.define(version: 2019_05_07_151647) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "units", default: [], array: true
+    t.string "invitation_code"
     t.index ["cohort_id"], name: "index_student_enrollments_on_cohort_id"
     t.index ["person_id"], name: "index_student_enrollments_on_person_id"
   end
@@ -211,7 +186,6 @@ ActiveRecord::Schema.define(version: 2019_05_07_151647) do
   create_table "users", force: :cascade do |t|
     t.bigint "person_id"
     t.boolean "is_admin", default: false
-    t.string "auth_sub"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "provider"
@@ -230,7 +204,6 @@ ActiveRecord::Schema.define(version: 2019_05_07_151647) do
   add_foreign_key "cohorts", "programs"
   add_foreign_key "emails", "people"
   add_foreign_key "homeworks", "cohorts"
-  add_foreign_key "invitations", "cohorts"
   add_foreign_key "notes", "users"
   add_foreign_key "phone_numbers", "people"
   add_foreign_key "student_enrollments", "cohorts"

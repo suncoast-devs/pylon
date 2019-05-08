@@ -3,19 +3,19 @@ class GithubIssueInterface
     client = Octokit::Client.new(access_token: person.access_token)
 
     client.update_issue("#{person.github}/#{person.assignments_repo}",
-      assignment.issue,
-      assignment.homework.title,
-      assignment.homework.body,
-      assignee: person.github)
+                        assignment.issue,
+                        assignment.homework.title,
+                        assignment.homework.body,
+                        assignee: person.github)
   end
 
   def self.create(person, assignment)
     client = Octokit::Client.new(access_token: person.access_token)
 
     issue = client.create_issue("#{person.github}/#{person.assignments_repo}",
-                     assignment.homework.title,
-                     assignment.homework.body,
-                     assignee: person.github)
+                                assignment.homework.title,
+                                assignment.homework.body,
+                                assignee: person.github)
 
     assignment.update(issue: issue.number)
   end
