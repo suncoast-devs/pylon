@@ -26,6 +26,8 @@ class GithubIssueInterface
     client.
       issues("#{person.github}/#{person.assignments_repo}", state: :all).
       map { |issue| issue.to_h.extract!(:number, :state, :title, :closed_at, :comments) }
+  rescue Octokit::InvalidRepository
+    []
   end
 
   def self.comment_on_assignment(assignment)
