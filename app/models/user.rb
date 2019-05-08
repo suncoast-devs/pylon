@@ -9,7 +9,7 @@ class User < ApplicationRecord
 
       person.full_name  = authentication_data.info.name
       person.nickname   = authentication_data.info.nickname
-      user.nickname     = authentication_data.info.nickname
+      user.github       = authentication_data.info.nickname
       user.access_token = authentication_data.credentials.token
 
       authentication_data.extra.all_emails.each do |github_email|
