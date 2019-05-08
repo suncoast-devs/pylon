@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   scope path: ApplicationResource.endpoint_namespace, defaults: { format: :jsonapi } do
+    resources :assignments
+    resources :homeworks
     resources :attendance_records
     resources :cohort_dates
     resources :profiles

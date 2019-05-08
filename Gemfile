@@ -37,3 +37,4 @@ end
 
 # For interacting with AWS
 gem "aws-sdk-s3"
+gem "octokit", "~> 4.14"

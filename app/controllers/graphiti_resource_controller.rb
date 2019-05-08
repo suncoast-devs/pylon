@@ -24,12 +24,12 @@ class GraphitiResourceController < ApplicationController
   end
 
   def update
-    record = self.resource.find(params)
+    @record = self.resource.find(params)
 
-    if record.update_attributes
-      render jsonapi: record
+    if @record.update_attributes
+      render jsonapi: @record
     else
-      render jsonapi_errors: record
+      render jsonapi_errors: @jrecord
     end
   end
 

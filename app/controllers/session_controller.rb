@@ -5,7 +5,6 @@ class SessionController < ApplicationController
 
   def create
     authentication_data = request.env['omniauth.auth']
-
     current_user = User.from_omniauth(authentication_data)
 
     if current_user

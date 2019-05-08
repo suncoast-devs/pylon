@@ -7,6 +7,8 @@ class ProfileResource < ApplicationResource
   attribute :honorific_prefix, :string
   attribute :honorific_suffix, :string
   attribute :nickname, :string
+  attribute :github, :string
+  attribute :assignments_repo, :string
   attribute :full_name, :string
   attribute :shirt_size, :string
   attribute :dietary_note, :string
@@ -29,5 +31,9 @@ class ProfileResource < ApplicationResource
 
     @object.profile_image.attached? ? context.rails_representation_url(@object.profile_image.variant(resize: "300x300", auto_orient: true).processed, host: base_url) : nil
   rescue Aws::S3::Errors::NotFound, Errno::ENOENT => ex
+  end
+
+  extra_attribute :issues, :array do
+    GithubIssueInterface.issues(@object)
   end
 end

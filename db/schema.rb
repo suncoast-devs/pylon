@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_05_130543) do
+ActiveRecord::Schema.define(version: 2019_05_07_151647) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,18 @@ ActiveRecord::Schema.define(version: 2019_05_05_130543) do
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
+  create_table "assignments", force: :cascade do |t|
+    t.integer "score"
+    t.integer "issue"
+    t.bigint "homework_id"
+    t.bigint "person_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["homework_id", "person_id"], name: "index_assignments_on_homework_id_and_person_id", unique: true
+    t.index ["homework_id"], name: "index_assignments_on_homework_id"
+    t.index ["person_id"], name: "index_assignments_on_person_id"
+  end
+
   create_table "attendance_records", force: :cascade do |t|
     t.bigint "person_id"
     t.bigint "cohort_date_id"
@@ -91,6 +103,17 @@ ActiveRecord::Schema.define(version: 2019_05_05_130543) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_emails_on_person_id"
+  end
+
+  create_table "homeworks", force: :cascade do |t|
+    t.string "name"
+    t.text "body"
+    t.string "summary"
+    t.boolean "counts_towards_completion"
+    t.bigint "cohort_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cohort_id"], name: "index_homeworks_on_cohort_id"
   end
 
   create_table "invitations", force: :cascade do |t|
@@ -193,16 +216,20 @@ ActiveRecord::Schema.define(version: 2019_05_05_130543) do
     t.datetime "updated_at", null: false
     t.string "provider"
     t.string "uid"
-    t.string "nickname"
+    t.string "github"
     t.string "access_token"
+    t.string "assignments_repo", default: "assignments"
     t.index ["person_id"], name: "index_users_on_person_id"
   end
 
+  add_foreign_key "assignments", "homeworks"
+  add_foreign_key "assignments", "people"
   add_foreign_key "attendance_records", "cohort_dates"
   add_foreign_key "attendance_records", "people"
   add_foreign_key "cohort_dates", "cohorts"
   add_foreign_key "cohorts", "programs"
   add_foreign_key "emails", "people"
+  add_foreign_key "homeworks", "cohorts"
   add_foreign_key "invitations", "cohorts"
   add_foreign_key "notes", "users"
   add_foreign_key "phone_numbers", "people"

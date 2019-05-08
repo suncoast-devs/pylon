@@ -12,4 +12,10 @@ class CohortResource < ApplicationResource
   has_many :student_enrollments
 
   many_to_many :people
+
+  def base_scope
+    return Cohort.all if admin?
+
+    current_user.cohorts
+  end
 end

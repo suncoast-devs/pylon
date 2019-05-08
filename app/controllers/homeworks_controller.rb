@@ -1,0 +1,2 @@
+class HomeworksController < GraphitiResourceController
+end
