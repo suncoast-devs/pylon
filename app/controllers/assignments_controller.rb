@@ -9,8 +9,12 @@ class AssignmentsController < GraphitiResourceController
 
       assignment = @record.data
 
-      if saved && assignment.previous_changes.include?(:score)
-        GithubIssueInterface.comment_on_assignment(assignment)
+      if saved
+        if assignment.previous_changes.include?(:score)
+          AssignmentChangeJob.perform_later(assignment: assignment, type: "graded")
+        else
+          AssignmentChangeJob.perform_later(assignment: assignment, type: "updated")
+        end
       end
     end
 
@@ -31,7 +35,7 @@ class AssignmentsController < GraphitiResourceController
       if existing
         record = self.resource.find(params)
 
-        GithubIssueInterface.update(person, existing)
+        AssignmentChangeJob.perform_later(assignment: assignment, type: "updated")
 
         saved = true
       else
@@ -40,7 +44,7 @@ class AssignmentsController < GraphitiResourceController
 
         if saved
           created_assignment = Assignment.find_by(person_id: params[:data][:attributes][:person_id], homework_id: params[:data][:attributes][:homework_id])
-          GithubIssueInterface.create(person, created_assignment)
+          AssignmentChangeJob.perform_later(assignment: created_assignment, type: "created")
         end
       end
     end

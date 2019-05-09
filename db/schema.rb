@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_08_203208) do
+ActiveRecord::Schema.define(version: 2019_05_09_172619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,8 @@ ActiveRecord::Schema.define(version: 2019_05_08_203208) do
     t.text "dietary_note", comment: "Any dietary restrictions or preferences"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slack_invite_code"
+    t.string "slack_user"
   end
 
   create_table "phone_numbers", force: :cascade do |t|

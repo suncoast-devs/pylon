@@ -38,3 +38,8 @@ end
 # For interacting with AWS
 gem "aws-sdk-s3"
 gem "octokit", "~> 4.14"
+
+# Slack
+gem 'slack-ruby-bot'
+gem 'slack-ruby-client'
+gem 'async-websocket'

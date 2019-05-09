@@ -12,9 +12,15 @@ class Person < ApplicationRecord
 
   has_one_attached :profile_image
 
+  before_create :ensure_slack_invite_code
+
   delegate :access_token, :github, :github=, :assignments_repo, :assignments_repo=, to: :user, prefix: false, allow_nil: true
 
   def needs_profile_image?
     !profile_image.attached?
+  end
+
+  def ensure_slack_invite_code
+    self.slack_invite_code = SecureRandom.hex[0..5]
   end
 end
