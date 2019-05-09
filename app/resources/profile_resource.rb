@@ -1,6 +1,6 @@
 class ProfileResource < ApplicationResource
   self.model = Person
-  
+
   attribute :given_name, :string
   attribute :family_name, :string
   attribute :additional_name, :string
@@ -12,6 +12,8 @@ class ProfileResource < ApplicationResource
   attribute :full_name, :string
   attribute :shirt_size, :string
   attribute :dietary_note, :string
+  attribute :slack_user, :string
+  attribute :slack_invite_code, :string, writable: false
 
   attribute :is_admin, :boolean do
     @object.user.is_admin
