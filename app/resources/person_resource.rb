@@ -10,6 +10,7 @@ class PersonResource < ApplicationResource
   attribute :shirt_size, :string
   attribute :dietary_note, :string
   attribute :assignments_repo, :string
+  attribute :slack_user, :string
 
   has_many :attendance_records
 
@@ -35,5 +36,9 @@ class PersonResource < ApplicationResource
 
   extra_attribute :issues, :array do
     GithubIssueInterface.issues(@object)
+  end
+
+  attribute :assignments_repo_exists, :boolean do
+    GithubIssueInterface.assignments_repo_exists?(@object)
   end
 end

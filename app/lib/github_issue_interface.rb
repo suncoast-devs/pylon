@@ -3,6 +3,11 @@ class GithubIssueInterface
     Octokit::Client.new(access_token: person.access_token)
   end
 
+  def self.assignments_repo_exists?(person)
+    log(type: :exists, repo: person.assignments_repo)
+    client(person).list_repos.any? { |repo| repo.name == person.assignments_repo }
+  end
+
   def self.log(data)
     Rails.logger.info "GITHUB: #{data.to_json}"
   end
