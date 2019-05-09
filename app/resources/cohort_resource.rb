@@ -1,6 +1,5 @@
 class CohortResource < ApplicationResource
   attribute :name, :string
-  attribute :description, :string
   attribute :start_date, :date
   attribute :end_date, :date
   attribute :program_id, :integer
