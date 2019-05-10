@@ -42,4 +42,10 @@ class PersonResource < ApplicationResource
   extra_attribute :assignments_repo_exists, :boolean do
     GithubIssueInterface.assignments_repo_exists?(@object)
   end
+
+  def base_scope
+    return Person.all if admin?
+
+    Person.where(id: current_user.person_id)
+  end
 end

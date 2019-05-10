@@ -1,5 +1,5 @@
 class PeopleController < GraphitiResourceController
-  before_action :ensure_admin, except: :redeem
+  before_action :ensure_admin, except: [:redeem, :index, :show]
 
   def redeem
     enrollment = StudentEnrollment.find_by(invitation_code: params[:invitation_code])

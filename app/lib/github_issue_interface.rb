@@ -4,8 +4,12 @@ class GithubIssueInterface
   end
 
   def self.assignments_repo_exists?(person)
+    unless person.github.present? && person.assignments_repo.present?
+      log(type: :exists, person.full_name, "No github or assignments repo present")
+      return
+    end
+
     repos = client(person).list_repos
-    log(type: :exists_debug, github: person.github, repos: repos)
 
     result = repos.any? { |repo| repo.name == person.assignments_repo }
 
