@@ -4,7 +4,7 @@ class GithubIssueInterface
   end
 
   def self.assignments_repo_exists?(person)
-    log(type: :exists, repo: person.assignments_repo)
+    log(type: :exists, github: person.github, repo: person.assignments_repo)
     client(person).list_repos.any? { |repo| repo.name == person.assignments_repo }
   rescue Octokit::InvalidRepository, Octokit::Unauthorized
     false
@@ -19,7 +19,7 @@ class GithubIssueInterface
 
     repo = " #{person.github}/#{person.assignments_repo}"
 
-    log(type: :update, repo: repo, assignment: assignment)
+    log(type: :update, github: person.github, repo: repo, assignment: assignment)
 
     client(person).update_issue(repo,
                                 assignment.issue,
@@ -33,7 +33,7 @@ class GithubIssueInterface
 
     repo = "#{person.github}/#{person.assignments_repo}"
 
-    log(type: :create, repo: repo, assignment: assignment)
+    log(type: :create, github: person.github, repo: repo, assignment: assignment)
 
     issue = client(person).create_issue(repo,
                                         assignment.homework.title,
@@ -71,7 +71,7 @@ class GithubIssueInterface
 
     message = comment_for_assignment(assignment)
 
-    log(type: :comment, repo: repo, assignment: assignment, message: message)
+    log(type: :comment, github: person.github, repo: repo, assignment: assignment, message: message)
 
     client(person).add_comment(repo, assignment.issue, message)
   end
