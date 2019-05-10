@@ -39,7 +39,7 @@ class PersonResource < ApplicationResource
     GithubIssueInterface.issues(@object)
   end
 
-  attribute :assignments_repo_exists, :boolean do
+  extra_attribute :assignments_repo_exists, :boolean do
     GithubIssueInterface.assignments_repo_exists?(@object)
   end
 end
