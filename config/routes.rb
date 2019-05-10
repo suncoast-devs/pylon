@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  scope path: ApplicationResource.endpoint_namespace, defaults: { format: :jsonapi } do
+  scope path: ApplicationResource.endpoint_namespace, defaults: {format: :jsonapi} do
     resources :assignments
     resources :homeworks
     resources :attendance_records
@@ -10,17 +10,14 @@ Rails.application.routes.draw do
     resources :units
     resources :programs
     resources :student_enrollments
-    mount VandalUi::Engine, at: '/vandal'
-    # your routes go here
   end
 
-  get '/foo' => 'vandal_ui/schemas#show'
+  get "/redeem" => "people#redeem"
+  get "/auth/:provider" => "omniauth#auth", as: :auth
+  get "/auth/:provider/callback" => "session#create"
+  get "/auth/failure" => "session#failure"
 
-  get    '/auth/:provider'          => 'omniauth#auth',  as: :auth
-  get    '/auth/:provider/callback' => 'session#create'
-  get    '/auth/failure'            => 'session#failure'
-
-  get    '/login'  => 'session#new'
-  post   '/login'  => 'session#create'
-  get    '/logout' => 'session#destroy'
+  get "/login" => "session#new"
+  post "/login" => "session#create"
+  get "/logout" => "session#destroy"
 end

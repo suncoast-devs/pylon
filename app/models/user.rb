@@ -3,21 +3,28 @@ class User < ApplicationRecord
 
   delegate :profile_image, :needs_profile_image?, :attendance_records, :assignments, :homeworks, :cohorts, to: :person, prefix: false
 
-  def self.from_omniauth(authentication_data)
-    user = User.where(provider: authentication_data['provider'], uid: authentication_data['uid']).first_or_create do |user|
-      person = user.build_person
+  def self.from_omniauth(authentication_data, params)
+    invitation_code = params["invitation_code"]
 
-      person.full_name  = authentication_data.info.name
-      person.nickname   = authentication_data.info.nickname
-      user.github       = authentication_data.info.nickname
-      user.access_token = authentication_data.credentials.token
+    if invitation_code
+      enrollment = StudentEnrollment.find_by(invitation_code: invitation_code)
 
-      authentication_data.extra.all_emails.each do |github_email|
-        person.emails.build(label: "github", address: github_email.email, is_primary: github_email.primary)
-      end
+      return nil unless enrollment
 
-      person.save
+      enrollment.person.user ||= User.create(provider: authentication_data["provider"],
+                                             uid: authentication_data["uid"],
+                                             github: authentication_data.info.nickname,
+                                             access_token: authentication_data.credentials.token)
 
+      # authentication_data.extra.all_emails.each do |github_email|
+      #   person.emails.build(label: "github", address: github_email.email, is_primary: github_email.primary)
+      # end
+
+      enrollment.update(invitation_code: nil)
+
+      enrollment.person.user
+    else
+      User.find_by(provider: authentication_data["provider"], uid: authentication_data["uid"])
     end
   end
 end
