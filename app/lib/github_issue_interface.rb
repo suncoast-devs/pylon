@@ -4,10 +4,11 @@ class GithubIssueInterface
   end
 
   def self.assignments_repo_exists?(person)
-    result = client(person).list_repos.any? { |repo|
-      log(type: :exists_debug, github: person.github, a: repo.name, b: person.assignments_repo)
-      repo.name == person.assignments_repo
-    }
+    repos = client(person).list_repos
+    log(type: :exists_debug, github: person.github, repos: repos)
+
+    result = repos.any? { |repo| repo.name == person.assignments_repo }
+
     log(type: :exists, github: person.github, repo: person.assignments_repo, result: result)
 
     result
