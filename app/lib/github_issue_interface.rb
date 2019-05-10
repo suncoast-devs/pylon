@@ -4,9 +4,13 @@ class GithubIssueInterface
   end
 
   def self.assignments_repo_exists?(person)
-    log(type: :exists, github: person.github, repo: person.assignments_repo)
-    client(person).list_repos.any? { |repo| repo.name == person.assignments_repo }
-  rescue Octokit::InvalidRepository, Octokit::Unauthorized
+    result = client(person).list_repos.any? { |repo| repo.name == person.assignments_repo }
+    log(type: :exists, github: person.github, repo: person.assignments_repo, result: result)
+
+    result
+  rescue Octokit::InvalidRepository, Octokit::Unauthorized => ex
+    log(type: :exists, github: person.github, repo: person.assignments_repo, error: ex.message)
+
     false
   end
 
