@@ -3,15 +3,17 @@ class GithubIssueInterface
     Octokit::Client.new(access_token: person.access_token)
   end
 
+  def self.no_repo_configured?(person)
+    return !person.github.present? || !person.assignments_repo.present?
+  end
+
   def self.assignments_repo_exists?(person)
-    unless person.github.present? && person.assignments_repo.present?
+    if no_repo_configured?(person)
       log(type: :exists, name: person.full_name, message: "No github or assignments repo present")
-      return
+      return false
     end
 
-    repos = client(person).list_repos
-
-    result = repos.any? { |repo| repo.name == person.assignments_repo }
+    result = client(person).list_repos.any? { |repo| repo.name == person.assignments_repo }
 
     log(type: :exists, github: person.github, repo: person.assignments_repo, result: result)
 
@@ -27,6 +29,8 @@ class GithubIssueInterface
   end
 
   def self.update(assignment)
+    return false if no_repo_configured?(person)
+
     person = assignment.person
 
     repo = " #{person.github}/#{person.assignments_repo}"
@@ -41,6 +45,8 @@ class GithubIssueInterface
   end
 
   def self.create(assignment)
+    return false if no_repo_configured?(person)
+
     person = assignment.person
 
     repo = "#{person.github}/#{person.assignments_repo}"
@@ -56,12 +62,14 @@ class GithubIssueInterface
   end
 
   def self.issues(person)
+    return [] if no_repo_configured?(person)
+
     repo = "#{person.github}/#{person.assignments_repo}"
 
     client(person).
       issues(repo, state: :all).
       map { |issue| issue.to_h.extract!(:number, :state, :title, :closed_at, :comments) }
-  rescue Octokit::InvalidRepository
+  rescue Octokit::NotFound, Octokit::InvalidRepository
     []
   end
 
@@ -77,6 +85,8 @@ class GithubIssueInterface
   end
 
   def self.comment_on_assignment(assignment)
+    return if no_repo_configured?(person)
+
     person = assignment.person
 
     repo = "#{person.github}/#{person.assignments_repo}"
