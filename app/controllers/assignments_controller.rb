@@ -1,6 +1,7 @@
 class AssignmentsController < GraphitiResourceController
   def update
     saved = false
+    record = nil
 
     ActiveRecord::Base.transaction do
       @record = self.resource.find(params)
@@ -27,6 +28,7 @@ class AssignmentsController < GraphitiResourceController
 
   def create
     saved = false
+    record = nil
 
     ActiveRecord::Base.transaction do
       person = Person.find_by(id: params[:data][:attributes][:person_id])
@@ -35,7 +37,7 @@ class AssignmentsController < GraphitiResourceController
       if existing
         record = self.resource.find(params)
 
-        AssignmentChangeJob.perform_later(assignment: assignment, type: "updated")
+        AssignmentChangeJob.perform_later(assignment: existing, type: "updated")
 
         saved = true
       else
