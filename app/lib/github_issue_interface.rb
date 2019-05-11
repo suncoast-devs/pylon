@@ -29,11 +29,11 @@ class GithubIssueInterface
   end
 
   def self.update(assignment)
-    return false if no_repo_configured?(person)
-
     person = assignment.person
 
-    repo = " #{person.github}/#{person.assignments_repo}"
+    return false if no_repo_configured?(person)
+
+    repo = "#{person.github}/#{person.assignments_repo}"
 
     log(type: :update, github: person.github, repo: repo, assignment: assignment)
 
@@ -45,9 +45,9 @@ class GithubIssueInterface
   end
 
   def self.create(assignment)
-    return false if no_repo_configured?(person)
-
     person = assignment.person
+
+    return false if no_repo_configured?(person)
 
     repo = "#{person.github}/#{person.assignments_repo}"
 
@@ -85,9 +85,9 @@ class GithubIssueInterface
   end
 
   def self.comment_on_assignment(assignment)
-    return if no_repo_configured?(person)
-
     person = assignment.person
+
+    return if no_repo_configured?(person)
 
     repo = "#{person.github}/#{person.assignments_repo}"
 
