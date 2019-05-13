@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   belongs_to :person, dependent: :destroy
 
-  delegate :profile_image, :needs_profile_image?, :attendance_records, :assignments, :homeworks, :cohorts, to: :person, prefix: false
+  delegate :profile_image, :needs_profile_image?, :attendance_records, :student_progress_reports, :assignments, :homeworks, :cohorts, to: :person, prefix: false
 
   def self.from_omniauth(authentication_data, params)
     invitation_code = params["invitation_code"]

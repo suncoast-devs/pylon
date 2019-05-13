@@ -9,6 +9,7 @@ class Cohort < ApplicationRecord
   has_many :attendance_records, through: :cohort_dates
 
   has_many :homeworks
+  has_many :progress_reports
 
   validates :name, presence: true, uniqueness: true
 

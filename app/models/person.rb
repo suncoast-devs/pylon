@@ -9,12 +9,14 @@ class Person < ApplicationRecord
   has_many :homeworks, through: :assignments
   has_one :user
   has_many :attendance_records
+  has_many :student_progress_reports
+  has_many :progress_reports, through: :student_progress_reports
 
   has_one_attached :profile_image
 
-  before_create :ensure_slack_invite_code
+  delegate :access_token, :github, :github=, to: :user, prefix: false, allow_nil: true
 
-  delegate :access_token, :github, :github=, :assignments_repo, :assignments_repo=, to: :user, prefix: false, allow_nil: true
+  before_create :ensure_slack_invite_code
 
   def needs_profile_image?
     !profile_image.attached?

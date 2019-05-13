@@ -14,6 +14,9 @@ class PersonResource < ApplicationResource
   attribute :slack_invite_code, :string, writable: false
 
   has_many :attendance_records
+  has_many :assignments
+  has_many :student_progress_reports
+  many_to_many :progress_reports
 
   attribute :is_admin, :boolean do
     @object.user && @object.user.is_admin

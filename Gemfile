@@ -43,3 +43,4 @@ gem "octokit", "~> 4.14"
 gem 'slack-ruby-bot'
 gem 'slack-ruby-client'
 gem 'async-websocket'
+gem "data_uri", "~> 0.1.0"

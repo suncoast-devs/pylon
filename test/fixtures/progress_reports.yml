@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cohort: one
+  start_date: 2019-05-11
+  end_date: 2019-05-11
+  homeworks: MyString
+
+two:
+  cohort: two
+  start_date: 2019-05-11
+  end_date: 2019-05-11
+  homeworks: MyString

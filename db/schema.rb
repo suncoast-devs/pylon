@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_09_225013) do
+ActiveRecord::Schema.define(version: 2019_05_13_185609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 2019_05_09_225013) do
     t.datetime "updated_at", null: false
     t.string "slack_invite_code"
     t.string "slack_user"
+    t.string "assignments_repo", default: "assignments"
   end
 
   create_table "phone_numbers", force: :cascade do |t|
@@ -153,6 +154,18 @@ ActiveRecord::Schema.define(version: 2019_05_09_225013) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "progress_reports", force: :cascade do |t|
+    t.bigint "cohort_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.integer "ids_of_homeworks", default: [], array: true
+    t.integer "ids_of_people", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "completed", default: false
+    t.index ["cohort_id"], name: "index_progress_reports_on_cohort_id"
   end
 
   create_table "student_enrollments", force: :cascade do |t|
@@ -177,6 +190,16 @@ ActiveRecord::Schema.define(version: 2019_05_09_225013) do
     t.index ["person_id"], name: "index_student_profiles_on_person_id"
   end
 
+  create_table "student_progress_reports", force: :cascade do |t|
+    t.bigint "progress_report_id"
+    t.bigint "person_id"
+    t.json "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_student_progress_reports_on_person_id"
+    t.index ["progress_report_id"], name: "index_student_progress_reports_on_progress_report_id"
+  end
+
   create_table "units", force: :cascade do |t|
     t.bigint "program_id"
     t.datetime "created_at", null: false
@@ -194,7 +217,6 @@ ActiveRecord::Schema.define(version: 2019_05_09_225013) do
     t.string "uid"
     t.string "github"
     t.string "access_token"
-    t.string "assignments_repo", default: "assignments"
     t.index ["person_id"], name: "index_users_on_person_id"
   end
 
@@ -208,9 +230,12 @@ ActiveRecord::Schema.define(version: 2019_05_09_225013) do
   add_foreign_key "homeworks", "cohorts"
   add_foreign_key "notes", "users"
   add_foreign_key "phone_numbers", "people"
+  add_foreign_key "progress_reports", "cohorts"
   add_foreign_key "student_enrollments", "cohorts"
   add_foreign_key "student_enrollments", "people"
   add_foreign_key "student_profiles", "people"
+  add_foreign_key "student_progress_reports", "people"
+  add_foreign_key "student_progress_reports", "progress_reports"
   add_foreign_key "units", "programs"
   add_foreign_key "users", "people"
 end
