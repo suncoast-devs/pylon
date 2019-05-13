@@ -47,8 +47,8 @@ class PersonResource < ApplicationResource
   end
 
   def base_scope
-    return Person.all if admin?
+    return Person.all.includes(:user).with_attached_profile_image if admin?
 
-    Person.where(id: current_user.person_id)
+    Person.where(id: current_user.person_id).includes(:user).with_attached_profile_image
   end
 end
