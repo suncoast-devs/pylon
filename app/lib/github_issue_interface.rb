@@ -13,7 +13,7 @@ class GithubIssueInterface
       return false
     end
 
-    result = client(person).list_repos.any? { |repo| repo.name == person.assignments_repo }
+    result = client(person).repository?("#{person.github}/#{person.assignments_repo}")
 
     log(type: :exists, github: person.github, repo: person.assignments_repo, result: result)
 
