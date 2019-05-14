@@ -51,12 +51,12 @@ class GithubIssueInterface
 
     repo = "#{person.github}/#{person.assignments_repo}"
 
-    log(type: :create, github: person.github, repo: repo, assignment: assignment)
-
     issue = client(person).create_issue(repo,
                                         assignment.homework.title,
                                         assignment.homework.body,
                                         assignee: person.github)
+
+    log(type: :create, github: person.github, repo: repo, assignment: assignment, issue: issue)
 
     assignment.update(issue: issue.number)
   end
