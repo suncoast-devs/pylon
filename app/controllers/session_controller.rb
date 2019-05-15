@@ -14,7 +14,7 @@ class SessionController < ApplicationController
         DownloadProfileImageJob.perform_later(user: current_user, url: authentication_data.info.image)
       end
 
-      redirect_to "#{params["callback"]}/#{token(current_user)}"
+      redirect_to "#{params["callback"]}/#{current_user.token}"
     else
       redirect_to auth_path(provider: "github")
     end
@@ -26,11 +26,5 @@ class SessionController < ApplicationController
 
   def failure
     # TODO, create failure.html.erb
-  end
-
-  private
-
-  def token(user)
-    JWT.encode({sub: user.id}, Rails.application.secrets.secret_key_base)
   end
 end

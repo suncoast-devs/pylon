@@ -38,6 +38,10 @@ class PersonResource < ApplicationResource
   rescue Aws::S3::Errors::NotFound, Errno::ENOENT => ex
   end
 
+  extra_attribute :token, :string do
+    context.current_user.is_admin ? @object.token : nil
+  end
+
   extra_attribute :issues, :array do
     GithubIssueInterface.issues(@object)
   end

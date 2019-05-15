@@ -14,7 +14,7 @@ class Person < ApplicationRecord
 
   has_one_attached :profile_image
 
-  delegate :access_token, :github, :github=, to: :user, prefix: false, allow_nil: true
+  delegate :access_token, :github, :github=, :token, to: :user, prefix: false, allow_nil: true
 
   before_create :ensure_slack_invite_code
 

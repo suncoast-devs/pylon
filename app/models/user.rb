@@ -3,6 +3,10 @@ class User < ApplicationRecord
 
   delegate :profile_image, :needs_profile_image?, :attendance_records, :student_progress_reports, :assignments, :homeworks, :cohorts, to: :person, prefix: false
 
+  def token
+    JWT.encode({sub: id}, Rails.application.secrets.secret_key_base)
+  end
+
   def self.from_omniauth(authentication_data, params)
     invitation_code = params["invitation_code"]
 
