@@ -29,22 +29,30 @@ class GithubIssueInterface
   end
 
   def self.update(assignment)
+    retries ||= 0
+
     person = assignment.person
 
     return false if no_repo_configured?(person)
 
     repo = "#{person.github}/#{person.assignments_repo}"
 
-    log(type: :update, github: person.github, repo: repo, assignment: assignment)
-
     client(person).update_issue(repo,
                                 assignment.issue,
                                 assignment.homework.title,
                                 assignment.homework.body,
                                 assignee: person.github)
+
+    log(type: :update, github: person.github, repo: repo, assignment: assignment)
+  rescue StandardError => ex
+    log(type: :update, github: person.github, repo: repo, failure: ex.message)
+
+    retry if ((retries += 1) < 3)
   end
 
   def self.create(assignment)
+    retries ||= 0
+
     person = assignment.person
 
     return false if no_repo_configured?(person)
@@ -56,9 +64,17 @@ class GithubIssueInterface
                                         assignment.homework.body,
                                         assignee: person.github)
 
-    log(type: :create, github: person.github, repo: repo, assignment: assignment, issue: issue)
-
     assignment.update(issue: issue.number)
+
+    log(type: :create, github: person.github, repo: repo, assignment: assignment, issue: issue)
+  rescue StandardError => ex
+    log(type: :create, github: person.github, repo: repo, failure: ex.message)
+
+    if ((retries += 1) < 3)
+      retry
+    else
+      assignment.destroy
+    end
   end
 
   def self.issues(person)
@@ -85,6 +101,8 @@ class GithubIssueInterface
   end
 
   def self.comment_on_assignment(assignment)
+    retries ||= 0
+
     person = assignment.person
 
     return if no_repo_configured?(person)
@@ -93,8 +111,12 @@ class GithubIssueInterface
 
     message = comment_for_assignment(assignment)
 
-    log(type: :comment, github: person.github, repo: repo, assignment: assignment, message: message)
-
     client(person).add_comment(repo, assignment.issue, message)
+
+    log(type: :comment, github: person.github, repo: repo, assignment: assignment, message: message)
+  rescue StandardError => ex
+    log(type: :comment, github: person.github, repo: repo, failure: ex.message)
+
+    retry if ((retries += 1) < 3)
   end
 end
