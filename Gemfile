@@ -44,3 +44,6 @@ gem 'slack-ruby-bot'
 gem 'slack-ruby-client'
 gem 'async-websocket'
 gem "data_uri", "~> 0.1.0"
+
+# Error reporting
+gem "sentry-raven", "~> 2.9"
