@@ -1,19 +1,19 @@
 class Assignment < ApplicationRecord
-  belongs_to :homework
+  belongs_to :homework, counter_cache: true
   belongs_to :person
 
   def score_description
     case score
     when 0
-      'Unacceptable'
+      "Unacceptable"
     when 1
-      'Needs Improvement'
+      "Needs Improvement"
     when 2
-      'Acceptable'
+      "Acceptable"
     when 3
-      'Meets Expectations'
+      "Meets Expectations"
     when 4
-      'Exceeds Expectations'
+      "Exceeds Expectations"
     end
   end
 end

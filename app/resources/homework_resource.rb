@@ -4,6 +4,7 @@ class HomeworkResource < ApplicationResource
   attribute :body, :string
   attribute :summary, :string
   attribute :counts_towards_completion, :boolean
+  attribute :assignments_count, :integer
   attribute :cohort_id, :integer
   attribute :created_at, :datetime, writable: false
   attribute :updated_at, :datetime, writable: false
