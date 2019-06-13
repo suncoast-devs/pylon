@@ -5,7 +5,6 @@ class CohortResource < ApplicationResource
   attribute :program_id, :integer
 
   belongs_to :program
-  many_to_many :units
 
   has_many :homeworks
   has_many :progress_reports
@@ -13,6 +12,11 @@ class CohortResource < ApplicationResource
   has_many :student_enrollments
 
   many_to_many :people
+
+  # many_to_many :units
+  extra_attribute :units, :array do
+    @object.units.to_a
+  end
 
   def base_scope
     return Cohort.all if admin?
