@@ -39,7 +39,7 @@ class PersonResource < ApplicationResource
   end
 
   extra_attribute :token, :string do
-    context.current_user.is_admin ? @object.token : nil
+    current_user.is_admin ? @object.token : nil
   end
 
   extra_attribute :issues, :array do
