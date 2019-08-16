@@ -41,7 +41,7 @@ class GithubIssueInterface
                                 assignment.issue,
                                 assignment.homework.title,
                                 assignment.homework.body,
-                                assignee: person.github)
+                                {assignee: person.github, state: assignment.issue_state})
 
     log(type: :update, github: person.github, repo: repo, assignment: assignment)
   rescue StandardError => ex

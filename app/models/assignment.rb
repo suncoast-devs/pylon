@@ -2,17 +2,38 @@ class Assignment < ApplicationRecord
   belongs_to :homework, counter_cache: true
   belongs_to :person
 
+  UNACCEPTABLE = 0
+  NEEDS_IMPROVEMENT = 1
+  ACCEPTABLE = 2
+  MEETS_EXPECTATION = 3
+  EXCEEDS_EXPECTATION = 4
+
+  def issue_state
+    case score
+    when UNACCEPTABLE
+      "open"
+    when NEEDS_IMPROVEMENT
+      "open"
+    when ACCEPTABLE
+      "closed"
+    when MEETS_EXPECTATION
+      "closed"
+    when EXCEEDS_EXPECTATION
+      "closed"
+    end
+  end
+
   def score_description
     case score
-    when 0
+    when UNACCEPTABLE
       "Unacceptable"
-    when 1
+    when NEEDS_IMPROVEMENT
       "Needs Improvement"
-    when 2
+    when ACCEPTABLE
       "Acceptable"
-    when 3
+    when MEETS_EXPECTATION
       "Meets Expectations"
-    when 4
+    when EXCEEDS_EXPECTATION
       "Exceeds Expectations"
     end
   end
