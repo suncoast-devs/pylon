@@ -9,7 +9,8 @@ class AssignmentChangeJob < ApplicationJob
     case type
     when "graded"
       GithubIssueInterface.comment_on_assignment(assignment)
-      PylonBot.message(assignment.person, %{Your homework *#{assignment.homework.title}* was marked: *#{assignment.score_description}*\n#{url(assignment)}})
+      GithubIssueInterface.set_issue_state(assignment)
+      PylonBot.message(assignment.person, %{Your homework *#{assignment.homework.title}* was marked *#{assignment.score_description}* and is now considered *#{assignment.issue_state}*\n#{url(assignment)}})
     when "updated"
       GithubIssueInterface.update(assignment)
       PylonBot.message(assignment.person, %{Your assignment *"#{assignment.homework.title}"* was updated with new content.\n#{url(assignment)}})

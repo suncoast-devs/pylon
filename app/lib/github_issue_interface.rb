@@ -41,7 +41,7 @@ class GithubIssueInterface
                                 assignment.issue,
                                 assignment.homework.title,
                                 assignment.homework.body,
-                                {assignee: person.github, state: assignment.issue_state})
+                                {assignee: person.github})
 
     log(type: :update, github: person.github, repo: repo, assignment: assignment)
   rescue StandardError => ex
@@ -82,6 +82,8 @@ class GithubIssueInterface
 
     repo = "#{person.github}/#{person.assignments_repo}"
 
+    log(type: :load_issues, repo: repo)
+
     client(person).
       issues(repo, state: :all).
       map { |issue| issue.to_h.extract!(:number, :state, :title, :closed_at, :comments) }
@@ -98,6 +100,26 @@ class GithubIssueInterface
       > &ldquo;#{gif["caption"]}&rdquo;
       __&mdash; via **[#{gif["contributor"]}](#{gif["url"]})**__
     EOF
+  end
+
+  def self.set_issue_state(assignment)
+    retries ||= 0
+
+    person = assignment.person
+
+    return if no_repo_configured?(person)
+
+    repo = "#{person.github}/#{person.assignments_repo}"
+
+    client(person).update_issue(repo,
+                                assignment.issue,
+                                {state: assignment.issue_state})
+
+    log(type: :state, github: person.github, repo: repo, assignment: assignment, state: assignment.issue_state)
+  rescue StandardError => ex
+    log(type: :state, github: person.github, repo: repo, assignment: assignment, state: assignment.issue_state, failure: ex.message)
+
+    retry if ((retries += 1) < 3)
   end
 
   def self.comment_on_assignment(assignment)
