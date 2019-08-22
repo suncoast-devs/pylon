@@ -1,5 +1,9 @@
 class GithubIssueInterface
-  def self.client(person)
+  def self.client_for_app
+    Octokit.client
+  end
+
+  def self.client_for_person(person)
     Octokit::Client.new(access_token: person.access_token)
   end
 
@@ -13,7 +17,7 @@ class GithubIssueInterface
       return false
     end
 
-    result = client(person).repository?("#{person.github}/#{person.assignments_repo}")
+    result = client_for_app.repository?("#{person.github}/#{person.assignments_repo}")
 
     log(type: :exists, github: person.github, repo: person.assignments_repo, result: result)
 
@@ -37,7 +41,7 @@ class GithubIssueInterface
 
     repo = "#{person.github}/#{person.assignments_repo}"
 
-    client(person).update_issue(repo,
+    client_for_person(person).update_issue(repo,
                                 assignment.issue,
                                 assignment.homework.title,
                                 assignment.homework.body,
@@ -59,7 +63,7 @@ class GithubIssueInterface
 
     repo = "#{person.github}/#{person.assignments_repo}"
 
-    issue = client(person).create_issue(repo,
+    issue = client_for_person(person).create_issue(repo,
                                         assignment.homework.title,
                                         assignment.homework.body,
                                         assignee: person.github)
@@ -84,7 +88,7 @@ class GithubIssueInterface
 
     log(type: :load_issues, repo: repo)
 
-    client(person).
+    client_for_app.
       issues(repo, state: :all).
       map { |issue| issue.to_h.extract!(:number, :state, :title, :closed_at, :comments) }
   rescue Octokit::NotFound, Octokit::InvalidRepository
@@ -111,7 +115,7 @@ class GithubIssueInterface
 
     repo = "#{person.github}/#{person.assignments_repo}"
 
-    client(person).update_issue(repo,
+    client_for_person(person).update_issue(repo,
                                 assignment.issue,
                                 {state: assignment.issue_state})
 
@@ -133,7 +137,7 @@ class GithubIssueInterface
 
     message = comment_for_assignment(assignment)
 
-    client(person).add_comment(repo, assignment.issue, message)
+    client_for_app.add_comment(repo, assignment.issue, message)
 
     log(type: :comment, github: person.github, repo: repo, assignment: assignment, message: message)
   rescue StandardError => ex
