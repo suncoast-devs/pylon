@@ -10,6 +10,10 @@ class AssignmentResource < ApplicationResource
   belongs_to :homework
   belongs_to :person
 
+  attribute :completed, :boolean, writable: false do
+    @object.score >= Assignment::ACCEPTABLE
+  end
+
   def base_scope
     return Assignment.all if admin?
 
