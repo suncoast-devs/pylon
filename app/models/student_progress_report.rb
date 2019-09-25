@@ -7,7 +7,7 @@ class StudentProgressReport < ApplicationRecord
   has_one_attached :report_image
 
   def report_image_data=(data)
-    report_image.attach(filename: reporT_image_filename, io: URI::Data.new(data).open)
+    report_image.attach(filename: report_image_filename, io: URI::Data.new(data).open)
   end
 
   def report_image_filename
