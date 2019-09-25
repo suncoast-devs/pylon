@@ -13,6 +13,12 @@ class CohortResource < ApplicationResource
 
   many_to_many :people
 
+  attribute :active, :boolean do
+    Date.today.between?(@object.start_date, @object.end_date)
+  rescue
+    false
+  end
+
   # many_to_many :units
   extra_attribute :units, :array do
     @object.units.to_a
