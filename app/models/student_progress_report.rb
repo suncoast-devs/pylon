@@ -11,6 +11,6 @@ class StudentProgressReport < ApplicationRecord
   end
 
   def report_image_filename
-    "Progress Report for #{person.full_name} between #{progress_report.start_date} and #{progress_report.end_date}.png"
+    "Progress Report for #{person.full_name} Cohort #{progress_report.cohort.name} between #{progress_report.start_date} and #{progress_report.end_date}.png"
   end
 end
