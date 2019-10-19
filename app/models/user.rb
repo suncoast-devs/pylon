@@ -38,7 +38,7 @@ class User < ApplicationRecord
           user.update(user_attributes.merge(is_admin: true))
         end
       else
-        user = User.find_by(provider: authentication_data["provider"], uid: authentication_data["uid"])
+        User.find_by(provider: authentication_data["provider"], uid: authentication_data["uid"])
       end
     end
   end
