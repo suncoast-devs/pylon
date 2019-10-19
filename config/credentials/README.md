@@ -1,0 +1,1 @@
+Yes, the `development.key` is here intentionally for development env credentials. Open to better ideas to make contributing to this app more accessible.

@@ -22,11 +22,11 @@ cohort = Cohort.create(program: program, name: 'Cohort', start_date: Date.today,
 
 person = Person.create(given_name: 'Darth', family_name: 'Vader', full_name: 'Darth Vader')
 
-StudentEnrollment.create(person: person, cohort: chort)
+StudentEnrollment.create(person: person, cohort: cohort)
 ```
 
 The StudentEnrollment will create an invite code, use that code to login to the system as a student would.
-You will need the `nexus` UI running and use an URL like: `http://localhost:3001/redeem/6542555` replacing
+You will need the `nexus` UI running and use an URL like: `http://localhost:3001/redeem/651c7ea` replacing
 the code above with the invite code from the StudentEnrollment model.
 
 Once this is done you will have a `User` entry. To make that user an admin:
