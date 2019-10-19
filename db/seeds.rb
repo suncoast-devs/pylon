@@ -1,14 +1,11 @@
 Cohort.create([
   {
-    name: "Cohort I",
-    description: "The Uno"
+    name: "Cohort I"
   },
   {
-    name: "Cohort II",
-    description: "Electric Boogalo"
+    name: "Cohort II"
   },
   {
-    name: "Cohort III",
-    description: "Return of the Cohort"
+    name: "Cohort III"
   }
 ])
