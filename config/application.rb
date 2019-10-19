@@ -23,7 +23,7 @@ module Pylon
         "http://#{argv_options[:Host]}:#{argv_options[:Port]}"
       end
     end
-    config.load_defaults 5.2
+    config.load_defaults 6.0
     config.api_only = true
 
     config.session_store :cookie_store, key: Rails.application.secrets.secret_key_base
