@@ -19,6 +19,6 @@ class StudentProgressReportResource < ApplicationResource
     base_url = "#{uri.scheme}://#{uri.host}:#{uri.port}"
 
     @object.report_image.attached? ? context.rails_blob_url(@object.report_image, disposition: "attachment") : nil
-  rescue Aws::S3::Errors::NotFound, Errno::ENOENT => ex
+  rescue Aws::S3::Errors::NotFound, Errno::ENOENT, ActiveStorage::FileNotFoundError => ex
   end
 end
