@@ -24,7 +24,9 @@ class PylonBot < SlackRubyBot::Bot
       return
     end
 
-    invite_code = data.text[/register (.*)/, 1]
+    # Just grab the code at the end. Some copy/paste is including unicode characters
+    # (line feed \u00a) between the register and the code
+    invite_code = data.text[/register.*?([a-fA-F0-9]+)/, 1]
 
     unless invite_code
       client.say(text: "Please provide an invitation code", channel: data.channel)
