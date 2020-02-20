@@ -21,7 +21,7 @@ class PylonBot < SlackRubyBot::Bot
 
     unless dm
       client.say(text: "This command works on in a direct message", channel: data.channel)
-      return
+      next
     end
 
     # Just grab the code at the end. Some copy/paste is including unicode characters
@@ -30,14 +30,14 @@ class PylonBot < SlackRubyBot::Bot
 
     unless invite_code
       client.say(text: "Please provide an invitation code", channel: data.channel)
-      return
+      next
     end
 
     person = Person.find_by(slack_invite_code: invite_code)
 
     unless person
       client.say(text: "Sorry, this invite code was not found", channel: data.channel)
-      return
+      next
     end
 
     if person.update(slack_user: data.user, slack_invite_code: nil)
