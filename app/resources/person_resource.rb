@@ -13,6 +13,7 @@ class PersonResource < ApplicationResource
   attribute :slack_user, :string
   attribute :slack_invite_code, :string, writable: false
 
+  many_to_many :cohorts
   has_many :attendance_records
   has_many :assignments
   has_many :student_progress_reports

@@ -15,6 +15,8 @@ class ProfileResource < ApplicationResource
   attribute :slack_user, :string
   attribute :slack_invite_code, :string, writable: false
 
+  has_many :cohorts
+
   attribute :is_admin, :boolean do
     @object.user.is_admin
   end

@@ -16,6 +16,6 @@ class HomeworkResource < ApplicationResource
   def base_scope
     return Homework.all if admin?
 
-    current_user.homeworks
+    Homework.where(id: current_user.cohorts.flat_map(&:homework_ids))
   end
 end
