@@ -37,13 +37,16 @@ end
 
 # For interacting with AWS
 gem "aws-sdk-s3"
+
+# For interaction with Github
 gem "octokit", "~> 4.14"
+gem "faraday-http-cache"
 
 # Slack
-gem 'slack-ruby-bot'
-gem 'slack-ruby-client'
+gem "slack-ruby-bot"
+gem "slack-ruby-client"
 # NOTE: As of this moment, slack-ruby-client needs specifically a gem 0.9.0 or less
-gem 'async-websocket', '~> 0.8.0'
+gem "async-websocket", "~> 0.8.0"
 gem "data_uri", "~> 0.1.0"
 
 # Error reporting

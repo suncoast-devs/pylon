@@ -6,3 +6,11 @@ Octokit.client_secret = ENV.fetch("GITHUB_APP_SECRET", Rails.application.credent
 Octokit.configure do |config|
   config.auto_paginate = true
 end
+
+# Setup caching
+stack = Faraday::RackBuilder.new do |builder|
+  builder.use Faraday::HttpCache, serializer: Marshal, shared_cache: false
+  builder.use Octokit::Response::RaiseError
+  builder.adapter Faraday.default_adapter
+end
+Octokit.middleware = stack
