@@ -26,7 +26,7 @@ class ProfileResource < ApplicationResource
     base_url = "#{uri.scheme}://#{uri.host}:#{uri.port}"
 
     @object.profile_image.attached? ? context.rails_representation_url(@object.profile_image.variant(resize: "32x32", auto_orient: true), host: base_url) : nil
-  rescue Aws::S3::Errors::NotFound, ActiveStorage::FileNotFoundError, Errno::ENOENT => ex
+  rescue NoMethodError, Aws::S3::Errors::NotFound, ActiveStorage::FileNotFoundError, Errno::ENOENT => ex
   end
 
   attribute :profile_image_url, :string do
@@ -34,7 +34,7 @@ class ProfileResource < ApplicationResource
     base_url = "#{uri.scheme}://#{uri.host}:#{uri.port}"
 
     @object.profile_image.attached? ? context.rails_representation_url(@object.profile_image.variant(resize: "300x300", auto_orient: true), host: base_url) : nil
-  rescue Aws::S3::Errors::NotFound, ActiveStorage::FileNotFoundError, Errno::ENOENT => ex
+  rescue NoMethodError, Aws::S3::Errors::NotFound, ActiveStorage::FileNotFoundError, Errno::ENOENT => ex
   end
 
   extra_attribute :issues, :array do
