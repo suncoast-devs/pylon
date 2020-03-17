@@ -34,9 +34,17 @@ class CohortResource < ApplicationResource
     @object.units.to_a
   end
 
+  def before_resolve(object, query)
+    if query.params[:include] == "student_enrollments.person.assignments,homeworks.assignments.person"
+      object.includes(homeworks: { assignments: { person: :user } }, student_enrollments: { person: [:user, :assignments] })
+    else
+      object
+    end
+  end
+
   def base_scope
     cohorts = admin? ? Cohort.all : current_user.cohorts
 
-    cohorts.includes(:student_enrollments, :people, :homeworks)
+    cohorts
   end
 end
