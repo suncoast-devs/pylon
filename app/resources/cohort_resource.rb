@@ -35,8 +35,8 @@ class CohortResource < ApplicationResource
   end
 
   def base_scope
-    return Cohort.all if admin?
+    cohorts = admin? ? Cohort.all : current_user.cohorts
 
-    current_user.cohorts
+    cohorts.includes(:student_enrollments, :people, :homeworks)
   end
 end
