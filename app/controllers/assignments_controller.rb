@@ -31,7 +31,7 @@ class AssignmentsController < GraphitiResourceController
     person = Person.find_by(id: params[:data][:attributes][:person_id])
 
     existing = Assignment.find_by(person_id: params[:data][:attributes][:person_id], homework_id: params[:data][:attributes][:homework_id])
-    if existing
+    if existing && existing.issue
       record = self.resource.find(params)
 
       AssignmentChangeJob.perform_later(assignment: existing, type: "updated")
