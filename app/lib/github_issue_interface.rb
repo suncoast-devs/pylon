@@ -137,7 +137,7 @@ class GithubIssueInterface
 
     message = comment_for_assignment(assignment)
 
-    client_for_app.add_comment(repo, assignment.issue, message)
+    client_for_person(person).add_comment(repo, assignment.issue, message)
 
     log(type: :comment, github: person.github, repo: repo, assignment: assignment, message: message)
   rescue StandardError => ex
