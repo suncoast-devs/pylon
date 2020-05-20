@@ -2,6 +2,7 @@ class Assignment < ApplicationRecord
   belongs_to :homework, counter_cache: true
   belongs_to :person
 
+  NOT_GRADED = -1
   UNACCEPTABLE = 0
   NEEDS_IMPROVEMENT = 1
   ACCEPTABLE = 2
@@ -10,6 +11,8 @@ class Assignment < ApplicationRecord
 
   def issue_state
     case score
+    when NOT_GRADED
+      "open"
     when UNACCEPTABLE
       "open"
     when NEEDS_IMPROVEMENT
@@ -25,6 +28,8 @@ class Assignment < ApplicationRecord
 
   def score_description
     case score
+    when NOT_GRADED
+      "Not Graded"
     when UNACCEPTABLE
       "Unacceptable"
     when NEEDS_IMPROVEMENT
