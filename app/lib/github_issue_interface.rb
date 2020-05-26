@@ -102,7 +102,6 @@ class GithubIssueInterface
 
       ![#{gif["caption"]}](#{gif["image"]})
       > &ldquo;#{gif["caption"]}&rdquo;
-      __&mdash; via **[#{gif["contributor"]}](#{gif["url"]})**__
     EOF
   end
 
