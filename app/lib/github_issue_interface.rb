@@ -100,7 +100,7 @@ class GithubIssueInterface
   def self.comment_for_assignment(assignment)
     raw_json = Net::HTTP.get(URI("https://gifs.suncoast.io/gifs/#{assignment.score}?max_byte_size=#{GITHUB_MAX_BYTE_SIZE_FOR_ATTACHMENTS}"))
 
-    message = "Your homework **#{assignment.homework.title}** was marked: **#{assignment.score_description}**\n"
+    message = "Your homework **#{assignment.homework.title}** was marked: **#{assignment.score_description}**\n\n\n"
 
     if raw_json
       gif = JSON.load(raw_json)
