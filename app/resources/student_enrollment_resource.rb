@@ -11,11 +11,11 @@ class StudentEnrollmentResource < ApplicationResource
   end
 
   attribute :show_grade, :boolean do
-    @object.active && !object.auditing
+    @object.active && !@object.auditing
   end
 
   attribute :generate_progress_report, :boolean do
-    @object.active && !object.auditing
+    @object.active && !@object.auditing
   end
 
   belongs_to :cohort
