@@ -17,6 +17,8 @@ class User < ApplicationRecord
       access_token: authentication_data.credentials.token
     }
 
+    Rails.logger.info "USER - from_omniauth : #{user_attributes.inspect}"
+
     if invitation_code
       enrollment = StudentEnrollment.find_by(invitation_code: invitation_code)
 
