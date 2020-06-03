@@ -30,16 +30,18 @@ class User < ApplicationRecord
 
       enrollment.update(invitation_code: nil)
 
-      enrollment.person.user
-    else
-      if Rails.env.development?
-        User.find_or_create_by(provider: authentication_data["provider"], uid: authentication_data["uid"]) do |user|
-          user.create_person(full_name: "Development User") unless user.person
-          user.update(user_attributes.merge(is_admin: true))
-        end
-      else
-        User.find_by(provider: authentication_data["provider"], uid: authentication_data["uid"])
+      return enrollment.person.user
+    end
+
+    if Rails.env.development?
+      return User.find_or_create_by(provider: authentication_data["provider"], uid: authentication_data["uid"]) do |user|
+        user.create_person(full_name: "Development User") unless user.person
+        user.update(user_attributes.merge(is_admin: true))
       end
+    end
+
+    User.find_by(provider: authentication_data["provider"], uid: authentication_data["uid"]) do |user|
+      user.update(user_attributes)
     end
   end
 end
