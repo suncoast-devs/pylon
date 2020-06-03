@@ -1,5 +1,6 @@
 class GithubIssueInterface
   GITHUB_MAX_BYTE_SIZE_FOR_ATTACHMENTS = 9_999_999
+  GITHUB_CONTENT_TYPE = "image/gif"
 
   def self.client_for_app
     Octokit.client
@@ -98,7 +99,7 @@ class GithubIssueInterface
   end
 
   def self.comment_for_assignment(assignment)
-    raw_json = Net::HTTP.get(URI("https://gifs.suncoast.io/gifs/#{assignment.score}?max_byte_size=#{GITHUB_MAX_BYTE_SIZE_FOR_ATTACHMENTS}"))
+    raw_json = Net::HTTP.get(URI("https://gifs.suncoast.io/gifs/#{assignment.score}?content_type=#{GITHUB_CONTENT_TYPE}&max_byte_size=#{GITHUB_MAX_BYTE_SIZE_FOR_ATTACHMENTS}"))
 
     message = "Your homework **#{assignment.homework.title}** was marked: **#{assignment.score_description}**\n\n\n"
 
