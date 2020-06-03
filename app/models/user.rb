@@ -42,7 +42,7 @@ class User < ApplicationRecord
       end
     end
 
-    User.find_by(provider: authentication_data["provider"], uid: authentication_data["uid"]) do |user|
+    User.find_by(provider: authentication_data["provider"], uid: authentication_data["uid"]).tap do |user|
       user.update(user_attributes)
     end
   end
