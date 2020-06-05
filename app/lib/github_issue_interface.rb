@@ -1,5 +1,5 @@
 class GithubIssueInterface
-  GITHUB_MAX_BYTE_SIZE_FOR_ATTACHMENTS = 9_999_999
+  GITHUB_MAX_BYTE_SIZE_FOR_ATTACHMENTS = 5_000_000
   GITHUB_CONTENT_TYPE = "image/gif"
 
   def self.client_for_app
