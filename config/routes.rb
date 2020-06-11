@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  scope path: ApplicationResource.endpoint_namespace, defaults: {format: :jsonapi} do
+  scope path: ApplicationResource.endpoint_namespace, defaults: { format: :jsonapi } do
     resources :progress_reports
     resources :assignments
     resources :homeworks
@@ -23,4 +23,6 @@ Rails.application.routes.draw do
   get "/login" => "session#new"
   post "/login" => "session#create"
   get "/logout" => "session#destroy"
+
+  post "/new-recording" => "recordings#create"
 end
