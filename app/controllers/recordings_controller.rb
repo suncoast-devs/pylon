@@ -1,9 +1,21 @@
 class RecordingsController < ApplicationController
   def create
-    topic = params["payload"]["topic"]
+    token = params["download_token"]
 
-    download_url = URI(params["payload"]["download_url"])
-    dowload_url.query = "access_token=#{token}"
+    payload = params["payload"]
+    return unless payload
+
+    object = payload["object"]
+    return unless object
+
+    recording = object["recording_files"].find { |recording| recording["recording_type"] == "shared_screen_with_speaker_view" }
+    return unless recording
+
+    uri = recording["download_url"]
+    download_url = URI(uri)
+    download_url.query = "access_token=#{token}"
+
+    topic = object["topic"]
 
     YoutubeUploadJob.perform_later(url: download_url.to_s, topic: topic)
   end
