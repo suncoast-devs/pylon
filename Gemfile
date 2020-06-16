@@ -51,3 +51,6 @@ gem "data_uri", "~> 0.1.0"
 
 # Error reporting
 gem "sentry-raven", "~> 2.9"
+
+# Youtube Uploading
+gem "youtube_it", "~> 2.1"
