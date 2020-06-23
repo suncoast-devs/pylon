@@ -5,7 +5,7 @@ class YoutubeUploadJob < ApplicationJob
     account = Yt::Account.new(refresh_token: Rails.application.credentials.YOUTUBE_REFRESH_TOKEN)
 
     # Unless there is a : in the topic, return
-    return unless topic.includes?(':')
+    return unless topic.include?(':')
 
     # Take the name of the playlist as what comes before the ':'
     playlist_name = topic.split(':').first
