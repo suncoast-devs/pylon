@@ -10,8 +10,8 @@ class YoutubeUploadJob < ApplicationJob
       return
     end
 
-    # Take the name of the playlist as what comes before the ':'
-    playlist_name = topic.split(':').first
+    # Take the name of the playlist as what comes before the ':' and the title from what comes after
+    playlist_name, video_title = topic.split(':')
 
     # If we have one
     if playlist_name
@@ -20,7 +20,7 @@ class YoutubeUploadJob < ApplicationJob
 
       # If we have a matching playlist then upload the video and associate it
       if youtube_playlist
-        video = account.upload_video(url, title: topic, privacy_status: 'unlisted')
+        video = account.upload_video(url, title: video_title, privacy_status: 'unlisted')
         youtube_playlist.add_video(video.id)
       end
     else
