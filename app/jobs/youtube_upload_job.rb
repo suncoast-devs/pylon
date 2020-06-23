@@ -5,7 +5,10 @@ class YoutubeUploadJob < ApplicationJob
     account = Yt::Account.new(refresh_token: Rails.application.credentials.YOUTUBE_REFRESH_TOKEN)
 
     # Unless there is a : in the topic, return
-    return unless topic.include?(':')
+    unless topic.include?(':')
+      Rails.logger.info "Did not upload a video to YouTube, URL and topic redacted -- no playlist included"
+      return
+    end
 
     # Take the name of the playlist as what comes before the ':'
     playlist_name = topic.split(':').first
@@ -20,6 +23,8 @@ class YoutubeUploadJob < ApplicationJob
         video = account.upload_video(url, title: topic, privacy_status: 'unlisted')
         youtube_playlist.add_video(video.id)
       end
+    else
+      Rails.logger.info "Did not upload a video to YouTube, URL and topic redacted -- playlist not found"
     end
   end
 end
