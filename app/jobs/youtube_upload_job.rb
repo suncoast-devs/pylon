@@ -21,7 +21,9 @@ class YoutubeUploadJob < ApplicationJob
       # If we have a matching playlist then upload the video and associate it
       if youtube_playlist
         video = account.upload_video(url, title: video_title, privacy_status: 'unlisted')
-        youtube_playlist.add_video(video.id)
+        youtube_playlist.add_video(video.id, { position: 1 })
+
+        PylonBot.channel_message(channel: playlist_name, text: "New video posted to youtube playlist: #{video_title}")
       end
     else
       Rails.logger.info "Did not upload a video to YouTube, URL and topic redacted -- playlist not found"
