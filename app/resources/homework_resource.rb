@@ -14,7 +14,7 @@ class HomeworkResource < ApplicationResource
   has_many :assignments
 
   def base_scope
-    return Homework.all if admin?
+    return Homework.all.includes(assignments: :person) if admin?
 
     Homework.where(id: current_user.cohorts.flat_map(&:homework_ids))
   end

@@ -20,4 +20,8 @@ class StudentEnrollmentResource < ApplicationResource
 
   belongs_to :cohort
   belongs_to :person
+
+  def base_scope
+    StudentEnrollment.all.includes(:person)
+  end
 end
