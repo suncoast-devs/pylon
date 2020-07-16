@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   scope path: ApplicationResource.endpoint_namespace, defaults: { format: :jsonapi } do
     resources :progress_reports
     resources :assignments
+    resources :assignment_events, only: [:index, :create]
     resources :homeworks
     resources :attendance_records
     resources :cohort_dates
@@ -13,6 +14,9 @@ Rails.application.routes.draw do
     resources :student_enrollments
     resources :progress_reports
     resources :student_progress_reports
+
+    resources :repositories, only: [:index]
+    resources :gists, only: [:index]
   end
 
   get "/redeem" => "people#redeem"

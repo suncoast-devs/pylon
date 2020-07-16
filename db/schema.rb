@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_01_125252) do
+ActiveRecord::Schema.define(version: 2020_07_16_213206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,17 @@ ActiveRecord::Schema.define(version: 2020_06_01_125252) do
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
+  create_table "assignment_events", force: :cascade do |t|
+    t.string "name"
+    t.string "payload"
+    t.bigint "assignment_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "person_id", null: false
+    t.index ["assignment_id"], name: "index_assignment_events_on_assignment_id"
+    t.index ["person_id"], name: "index_assignment_events_on_person_id"
+  end
+
   create_table "assignments", force: :cascade do |t|
     t.integer "score", default: -1
     t.integer "issue"
@@ -59,7 +70,7 @@ ActiveRecord::Schema.define(version: 2020_06_01_125252) do
     t.bigint "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "due_at"
+    t.boolean "turned_in"
     t.index ["homework_id", "person_id"], name: "index_assignments_on_homework_id_and_person_id", unique: true
     t.index ["homework_id"], name: "index_assignments_on_homework_id"
     t.index ["person_id"], name: "index_assignments_on_person_id"
@@ -114,29 +125,9 @@ ActiveRecord::Schema.define(version: 2020_06_01_125252) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "assignments_count"
+    t.string "turn_in_type"
+    t.datetime "due_at"
     t.index ["cohort_id"], name: "index_homeworks_on_cohort_id"
-  end
-
-  create_table "links", force: :cascade do |t|
-    t.string "linkable_type"
-    t.bigint "linkable_id"
-    t.string "label"
-    t.string "identifier"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable_type_and_linkable_id"
-  end
-
-  create_table "notes", force: :cascade do |t|
-    t.string "notable_type"
-    t.bigint "notable_id"
-    t.bigint "user_id"
-    t.string "label"
-    t.text "message"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["notable_type", "notable_id"], name: "index_notes_on_notable_type_and_notable_id"
-    t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -154,16 +145,6 @@ ActiveRecord::Schema.define(version: 2020_06_01_125252) do
     t.string "slack_invite_code"
     t.string "slack_user"
     t.string "assignments_repo", default: "assignments"
-  end
-
-  create_table "phone_numbers", force: :cascade do |t|
-    t.bigint "person_id"
-    t.string "label"
-    t.string "tel"
-    t.boolean "is_sms_capable"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_phone_numbers_on_person_id"
   end
 
   create_table "programs", force: :cascade do |t|
@@ -199,17 +180,6 @@ ActiveRecord::Schema.define(version: 2020_06_01_125252) do
     t.index ["person_id"], name: "index_student_enrollments_on_person_id"
   end
 
-  create_table "student_profiles", force: :cascade do |t|
-    t.bigint "person_id"
-    t.string "status"
-    t.boolean "is_looking_for_work"
-    t.boolean "is_available_for_freelance"
-    t.string "specialty"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["person_id"], name: "index_student_profiles_on_person_id"
-  end
-
   create_table "student_progress_reports", force: :cascade do |t|
     t.bigint "progress_report_id"
     t.bigint "person_id"
@@ -241,6 +211,8 @@ ActiveRecord::Schema.define(version: 2020_06_01_125252) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "assignment_events", "assignments"
+  add_foreign_key "assignment_events", "people"
   add_foreign_key "assignments", "homeworks"
   add_foreign_key "assignments", "people"
   add_foreign_key "attendance_records", "cohort_dates"
@@ -249,12 +221,9 @@ ActiveRecord::Schema.define(version: 2020_06_01_125252) do
   add_foreign_key "cohorts", "programs"
   add_foreign_key "emails", "people"
   add_foreign_key "homeworks", "cohorts"
-  add_foreign_key "notes", "users"
-  add_foreign_key "phone_numbers", "people"
   add_foreign_key "progress_reports", "cohorts"
   add_foreign_key "student_enrollments", "cohorts"
   add_foreign_key "student_enrollments", "people"
-  add_foreign_key "student_profiles", "people"
   add_foreign_key "student_progress_reports", "people"
   add_foreign_key "student_progress_reports", "progress_reports"
   add_foreign_key "units", "programs"

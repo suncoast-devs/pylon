@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   belongs_to :person, dependent: :destroy
 
-  delegate :profile_image, :needs_profile_image?, :attendance_records, :student_progress_reports, :assignments, :homeworks, :cohorts, to: :person, prefix: false, allow_nil: true
+  delegate :profile_image, :needs_profile_image?, :attendance_records, :student_progress_reports, :assignments, :assignment_ids, :homeworks, :cohorts, to: :person, prefix: false, allow_nil: true
 
   def token
     JWT.encode({ sub: id }, Rails.application.secrets.secret_key_base)
@@ -37,9 +37,9 @@ class User < ApplicationRecord
 
     if Rails.env.development?
       return User.find_or_create_by(provider: authentication_data["provider"], uid: authentication_data["uid"]) do |user|
-        user.create_person(full_name: "Development User") unless user.person
-        user.update(user_attributes.merge(is_admin: true))
-      end
+               user.create_person(full_name: "Development User") unless user.person
+               user.update(user_attributes.merge(is_admin: true))
+             end
     end
 
     User.find_by(provider: authentication_data["provider"], uid: authentication_data["uid"]).tap do |user|

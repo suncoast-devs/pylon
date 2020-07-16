@@ -45,10 +45,10 @@ class GithubIssueInterface
     repo = "#{person.github}/#{person.assignments_repo}"
 
     client_for_person(person).update_issue(repo,
-                                assignment.issue,
-                                assignment.homework.title,
-                                assignment.homework.body,
-                                {assignee: person.github})
+                                           assignment.issue,
+                                           assignment.homework.title,
+                                           assignment.homework.body,
+                                           { assignee: person.github })
 
     log(type: :update, github: person.github, repo: repo, assignment: assignment)
   rescue StandardError => ex
@@ -67,9 +67,9 @@ class GithubIssueInterface
     repo = "#{person.github}/#{person.assignments_repo}"
 
     issue = client_for_person(person).create_issue(repo,
-                                        assignment.homework.title,
-                                        assignment.homework.body,
-                                        assignee: person.github)
+                                                   assignment.homework.title,
+                                                   assignment.homework.body,
+                                                   assignee: person.github)
 
     assignment.update(issue: issue.number)
 
@@ -82,6 +82,18 @@ class GithubIssueInterface
     else
       assignment.destroy
     end
+  end
+
+  def self.repositories(person)
+    client_for_person(person).repositories.sort_by(&:pushed_at).reverse
+  rescue Octokit::NotFound, Octokit::InvalidRepository
+    []
+  end
+
+  def self.gists(person)
+    client_for_person(person).gists.sort_by(&:updated_at).reverse
+  rescue Octokit::NotFound, Octokit::InvalidRepository
+    []
   end
 
   def self.issues(person)
@@ -124,8 +136,8 @@ class GithubIssueInterface
     repo = "#{person.github}/#{person.assignments_repo}"
 
     client_for_person(person).update_issue(repo,
-                                assignment.issue,
-                                {state: assignment.issue_state})
+                                           assignment.issue,
+                                           { state: assignment.issue_state })
 
     log(type: :state, github: person.github, repo: repo, assignment: assignment, state: assignment.issue_state)
   rescue StandardError => ex

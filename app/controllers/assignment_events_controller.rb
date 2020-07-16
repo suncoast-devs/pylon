@@ -1,0 +1,2 @@
+class AssignmentEventsController < GraphitiResourceController
+end

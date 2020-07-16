@@ -1,6 +1,7 @@
 class Assignment < ApplicationRecord
   belongs_to :homework, counter_cache: true
   belongs_to :person
+  has_many :assignment_events
 
   NOT_GRADED = -1
   UNACCEPTABLE = 0
