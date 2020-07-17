@@ -9,7 +9,6 @@ class PersonResource < ApplicationResource
   attribute :full_name, :string
   attribute :shirt_size, :string
   attribute :dietary_note, :string
-  attribute :assignments_repo, :string
   attribute :slack_user, :string
   attribute :slack_invite_code, :string, writable: false
 

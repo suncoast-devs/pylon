@@ -8,7 +8,6 @@ class ProfileResource < ApplicationResource
   attribute :honorific_suffix, :string
   attribute :nickname, :string
   attribute :github, :string
-  attribute :assignments_repo, :string
   attribute :full_name, :string
   attribute :shirt_size, :string
   attribute :dietary_note, :string
