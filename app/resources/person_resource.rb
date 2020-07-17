@@ -52,16 +52,6 @@ class PersonResource < ApplicationResource
     current_user.is_admin ? @object.token : nil
   end
 
-  extra_attribute :issues, :array do
-    []
-    # GithubIssueInterface.issues(@object)
-  end
-
-  extra_attribute :assignments_repo_exists, :boolean do
-    true
-    # GithubIssueInterface.assignments_repo_exists?(@object)
-  end
-
   def base_scope
     Person.all.includes(:user).with_attached_profile_image
 
