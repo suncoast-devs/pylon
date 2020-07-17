@@ -14,6 +14,10 @@ class Person < ApplicationRecord
 
   before_create :ensure_slack_invite_code
 
+  def completed_assignments(cohort_id)
+    assignments.where("score > 0").joins(:homework).where(homeworks: { counts_towards_completion: true, cohort_id: cohort_id })
+  end
+
   def needs_profile_image?
     !profile_image.attached?
   end

@@ -27,11 +27,18 @@ class AssignmentEventResource < ApplicationResource
     end
 
     if model.name == "grade"
-      # if context.current_user_is_admin?
-      model.assignment.score = model.payload["score"]
-      # else
-      # raise "ZOMG, NO"
-      # end
+      if context.current_user_is_admin?
+        model.assignment.score = model.payload["score"]
+
+        # Reopen the assignment if it is needed
+        if model.assignment.issue_state == "open"
+          model.assignment.turned_in = false
+        end
+
+        AssignmentGradedJob.perform_later(assignment: model.assignment)
+      else
+        raise "ZOMG, NO"
+      end
     end
   end
 

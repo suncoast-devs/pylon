@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_16_213206) do
+ActiveRecord::Schema.define(version: 2020_07_17_133154) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -34,22 +35,6 @@ ActiveRecord::Schema.define(version: 2020_07_16_213206) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "addresses", force: :cascade do |t|
-    t.string "addressable_type"
-    t.bigint "addressable_id"
-    t.string "label"
-    t.string "street_address"
-    t.string "extended_address"
-    t.string "locality"
-    t.string "region"
-    t.string "postal_code"
-    t.string "country_name"
-    t.string "post_office_box"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
   end
 
   create_table "assignment_events", force: :cascade do |t|
@@ -87,10 +72,19 @@ ActiveRecord::Schema.define(version: 2020_07_16_213206) do
     t.index ["person_id"], name: "index_attendance_records_on_person_id"
   end
 
+  create_table "cohort", id: :serial, force: :cascade do |t|
+    t.text "name", null: false
+    t.text "description", null: false
+    t.date "startDate", null: false
+    t.date "endDate", null: false
+    t.integer "programId", null: false
+    t.index ["name"], name: "cohort_name_key", unique: true
+  end
+
   create_table "cohort_dates", force: :cascade do |t|
     t.bigint "cohort_id"
     t.date "day"
-    t.string "description"
+    t.string "description", default: "Program Day"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cohort_id"], name: "index_cohort_dates_on_cohort_id"
@@ -127,6 +121,7 @@ ActiveRecord::Schema.define(version: 2020_07_16_213206) do
     t.integer "assignments_count"
     t.string "turn_in_type"
     t.datetime "due_at"
+    t.boolean "assigned", default: false
     t.index ["cohort_id"], name: "index_homeworks_on_cohort_id"
   end
 
@@ -145,6 +140,35 @@ ActiveRecord::Schema.define(version: 2020_07_16_213206) do
     t.string "slack_invite_code"
     t.string "slack_user"
     t.string "assignments_repo", default: "assignments"
+  end
+
+  create_table "person", id: :serial, force: :cascade do |t|
+    t.text "givenName", null: false
+    t.text "familyName", null: false
+    t.text "additionalName", null: false
+    t.text "honorificPrefix", null: false
+    t.text "honorificSuffix", null: false
+    t.text "nickname", null: false
+    t.text "fullName", null: false
+    t.text "shirtSize", null: false
+    t.text "dietaryNote", null: false
+    t.text "userId"
+    t.index ["userId"], name: "person_userId_key", unique: true
+  end
+
+  create_table "phoneNumber", id: :integer, default: -> { "nextval('phonenumber_id_seq'::regclass)" }, force: :cascade do |t|
+    t.integer "personId", null: false
+    t.text "label", null: false
+    t.text "tel", null: false
+    t.boolean "isSMSCapable", null: false
+  end
+
+  create_table "program", id: :serial, force: :cascade do |t|
+    t.text "title", null: false
+    t.text "identifier", null: false
+    t.text "description", null: false
+    t.index ["identifier"], name: "program_identifier_key", unique: true
+    t.index ["title"], name: "program_title_key", unique: true
   end
 
   create_table "programs", force: :cascade do |t|
@@ -217,10 +241,12 @@ ActiveRecord::Schema.define(version: 2020_07_16_213206) do
   add_foreign_key "assignments", "people"
   add_foreign_key "attendance_records", "cohort_dates"
   add_foreign_key "attendance_records", "people"
+  add_foreign_key "cohort", "program", column: "programId", name: "cohort_programid_fkey"
   add_foreign_key "cohort_dates", "cohorts"
   add_foreign_key "cohorts", "programs"
   add_foreign_key "emails", "people"
   add_foreign_key "homeworks", "cohorts"
+  add_foreign_key "phoneNumber", "person", column: "personId", name: "phonenumber_personid_fkey"
   add_foreign_key "progress_reports", "cohorts"
   add_foreign_key "student_enrollments", "cohorts"
   add_foreign_key "student_enrollments", "people"

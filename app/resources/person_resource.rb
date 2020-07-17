@@ -17,6 +17,7 @@ class PersonResource < ApplicationResource
   has_many :attendance_records
   has_many :assignments
   has_many :student_progress_reports
+  has_many :student_enrollments
   many_to_many :progress_reports
 
   attribute :is_admin, :boolean do
@@ -24,19 +25,27 @@ class PersonResource < ApplicationResource
   end
 
   attribute :small_profile_image_url, :string do
-    uri = URI.parse(context.request.original_url)
-    base_url = "#{uri.scheme}://#{uri.host}:#{uri.port}"
+    Rails.cache.fetch("small_profile_image_url_#{@object.id}") do
+      begin
+        uri = URI.parse(context.request.original_url)
+        base_url = "#{uri.scheme}://#{uri.host}:#{uri.port}"
 
-    @object.profile_image.attached? ? context.rails_representation_url(@object.profile_image.variant(resize: "32x32", auto_orient: true), host: base_url) : nil
-  rescue NoMethodError, Aws::S3::Errors::NotFound, Errno::ENOENT, ActiveStorage::FileNotFoundError => ex
+        @object.profile_image.attached? ? context.rails_representation_url(@object.profile_image.variant(resize: "32x32", auto_orient: true), host: base_url) : nil
+      rescue NoMethodError, Aws::S3::Errors::NotFound, Errno::ENOENT, ActiveStorage::FileNotFoundError => ex
+      end
+    end
   end
 
   attribute :profile_image_url, :string do
-    uri = URI.parse(context.request.original_url)
-    base_url = "#{uri.scheme}://#{uri.host}:#{uri.port}"
+    Rails.cache.fetch("profile_image_url_#{@object.id}") do
+      begin
+        uri = URI.parse(context.request.original_url)
+        base_url = "#{uri.scheme}://#{uri.host}:#{uri.port}"
 
-    @object.profile_image.attached? ? context.rails_representation_url(@object.profile_image.variant(resize: "300x300", auto_orient: true), host: base_url) : nil
-  rescue NoMethodError, Aws::S3::Errors::NotFound, Errno::ENOENT, ActiveStorage::FileNotFoundError => ex
+        @object.profile_image.attached? ? context.rails_representation_url(@object.profile_image.variant(resize: "300x300", auto_orient: true), host: base_url) : nil
+      rescue NoMethodError, Aws::S3::Errors::NotFound, Errno::ENOENT, ActiveStorage::FileNotFoundError => ex
+      end
+    end
   end
 
   extra_attribute :token, :string do
@@ -44,11 +53,13 @@ class PersonResource < ApplicationResource
   end
 
   extra_attribute :issues, :array do
-    GithubIssueInterface.issues(@object)
+    []
+    # GithubIssueInterface.issues(@object)
   end
 
   extra_attribute :assignments_repo_exists, :boolean do
-    GithubIssueInterface.assignments_repo_exists?(@object)
+    true
+    # GithubIssueInterface.assignments_repo_exists?(@object)
   end
 
   def base_scope

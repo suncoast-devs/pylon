@@ -5,6 +5,7 @@ class HomeworkResource < ApplicationResource
   attribute :title, :string, writable: false
   attribute :summary, :string
   attribute :turn_in_type, :string
+  attribute :assigned, :boolean
   attribute :counts_towards_completion, :boolean
   attribute :due_at, :datetime
   attribute :assignments_count, :integer
@@ -16,9 +17,16 @@ class HomeworkResource < ApplicationResource
   belongs_to :cohort
   has_many :assignments
 
+  after_save do |model|
+    # If we are assigning this homework, then create the needed assignments
+    if model.assigned
+      HomeworkAssignedJob.perform_later(homework: model)
+    end
+  end
+
   def base_scope
     return Homework.all.includes(assignments: :person) if admin?
 
-    Homework.where(id: current_user.cohorts.flat_map(&:homework_ids))
+    Homework.where(cohort_id: current_user.cohorts.pluck(:id))
   end
 end
