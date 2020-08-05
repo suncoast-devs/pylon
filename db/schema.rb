@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2020_07_17_133154) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -70,15 +69,6 @@ ActiveRecord::Schema.define(version: 2020_07_17_133154) do
     t.datetime "updated_at", null: false
     t.index ["cohort_date_id"], name: "index_attendance_records_on_cohort_date_id"
     t.index ["person_id"], name: "index_attendance_records_on_person_id"
-  end
-
-  create_table "cohort", id: :serial, force: :cascade do |t|
-    t.text "name", null: false
-    t.text "description", null: false
-    t.date "startDate", null: false
-    t.date "endDate", null: false
-    t.integer "programId", null: false
-    t.index ["name"], name: "cohort_name_key", unique: true
   end
 
   create_table "cohort_dates", force: :cascade do |t|
@@ -140,35 +130,6 @@ ActiveRecord::Schema.define(version: 2020_07_17_133154) do
     t.string "slack_invite_code"
     t.string "slack_user"
     t.string "assignments_repo", default: "assignments"
-  end
-
-  create_table "person", id: :serial, force: :cascade do |t|
-    t.text "givenName", null: false
-    t.text "familyName", null: false
-    t.text "additionalName", null: false
-    t.text "honorificPrefix", null: false
-    t.text "honorificSuffix", null: false
-    t.text "nickname", null: false
-    t.text "fullName", null: false
-    t.text "shirtSize", null: false
-    t.text "dietaryNote", null: false
-    t.text "userId"
-    t.index ["userId"], name: "person_userId_key", unique: true
-  end
-
-  create_table "phoneNumber", id: :integer, default: -> { "nextval('phonenumber_id_seq'::regclass)" }, force: :cascade do |t|
-    t.integer "personId", null: false
-    t.text "label", null: false
-    t.text "tel", null: false
-    t.boolean "isSMSCapable", null: false
-  end
-
-  create_table "program", id: :serial, force: :cascade do |t|
-    t.text "title", null: false
-    t.text "identifier", null: false
-    t.text "description", null: false
-    t.index ["identifier"], name: "program_identifier_key", unique: true
-    t.index ["title"], name: "program_title_key", unique: true
   end
 
   create_table "programs", force: :cascade do |t|
@@ -241,12 +202,10 @@ ActiveRecord::Schema.define(version: 2020_07_17_133154) do
   add_foreign_key "assignments", "people"
   add_foreign_key "attendance_records", "cohort_dates"
   add_foreign_key "attendance_records", "people"
-  add_foreign_key "cohort", "program", column: "programId", name: "cohort_programid_fkey"
   add_foreign_key "cohort_dates", "cohorts"
   add_foreign_key "cohorts", "programs"
   add_foreign_key "emails", "people"
   add_foreign_key "homeworks", "cohorts"
-  add_foreign_key "phoneNumber", "person", column: "personId", name: "phonenumber_personid_fkey"
   add_foreign_key "progress_reports", "cohorts"
   add_foreign_key "student_enrollments", "cohorts"
   add_foreign_key "student_enrollments", "people"
