@@ -276,7 +276,7 @@ GEM
     vandal_ui (0.4.4)
     websocket-driver (0.7.2)
       websocket-extensions (>= 0.1.0)
-    websocket-extensions (0.1.4)
+    websocket-extensions (0.1.5)
     yt (0.33.0)
       activesupport
     zeitwerk (2.4.0)
