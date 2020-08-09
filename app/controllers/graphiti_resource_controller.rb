@@ -37,7 +37,7 @@ class GraphitiResourceController < ApplicationController
     record = self.resource.find(params)
 
     if record.destroy
-      render jsonapi: {meta: {}}, status: 200
+      render jsonapi: { meta: {} }, status: 200
     else
       render jsonapi_errors: record
     end

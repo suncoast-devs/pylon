@@ -15,6 +15,10 @@ class Cohort < ApplicationRecord
 
   after_create_commit :generate_dates
 
+  def assigned_homework_marked_for_completion
+    homeworks.where("assignments_count > 0").where(counts_towards_completion: true)
+  end
+
   private
 
   def generate_dates

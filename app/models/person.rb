@@ -1,8 +1,4 @@
 class Person < ApplicationRecord
-  has_many :emails, dependent: :destroy
-  has_many :phone_numbers, dependent: :destroy
-  has_many :links, dependent: :destroy, as: :linkable
-  has_one :student_profile, dependent: :destroy
   has_many :student_enrollments, dependent: :destroy
   has_many :cohorts, through: :student_enrollments
   has_many :assignments
@@ -17,6 +13,10 @@ class Person < ApplicationRecord
   delegate :access_token, :github, :github=, :token, to: :user, prefix: false, allow_nil: true
 
   before_create :ensure_slack_invite_code
+
+  def completed_assignments(cohort_id)
+    assignments.where("score > 0").joins(:homework).where(homeworks: { counts_towards_completion: true, cohort_id: cohort_id })
+  end
 
   def needs_profile_image?
     !profile_image.attached?
