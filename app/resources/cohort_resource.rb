@@ -44,7 +44,5 @@ class CohortResource < ApplicationResource
 
   def base_scope
     cohorts = admin? ? Cohort.all : current_user.cohorts
-
-    #cohorts.includes(student_enrollments: { person: { assignments: "homework" } }, homeworks: { assignments: "person" })
   end
 end
