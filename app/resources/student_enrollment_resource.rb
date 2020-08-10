@@ -34,6 +34,8 @@ class StudentEnrollmentResource < ApplicationResource
   belongs_to :person
 
   def base_scope
-    StudentEnrollment.all.includes(:person, :cohort)
+    return StudentEnrollment.all.includes(:person, :cohort) if admin?
+
+    StudentEnrollment.where(person_id: current_person.id)
   end
 end
