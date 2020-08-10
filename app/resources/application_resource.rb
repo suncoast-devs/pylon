@@ -18,6 +18,10 @@ class ApplicationResource < Graphiti::Resource
     current_user.is_admin?
   end
 
+  def current_person
+    context.current_person
+  end
+
   def current_user
     context.current_user
   end
