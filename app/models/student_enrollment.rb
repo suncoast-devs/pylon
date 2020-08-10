@@ -39,6 +39,6 @@ class StudentEnrollment < ApplicationRecord
   end
 
   def needed_to_complete_count
-    counted_homework == 0 ? null : ([0, (80 - completion_percentage) / 100.0].max * counted_homework).ceil
+    counted_homework == 0 ? nil : ([0, (80 - completion_percentage) / 100.0].max * counted_homework).ceil
   end
 end
