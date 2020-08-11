@@ -19,10 +19,10 @@ class LectureUploadJob < ApplicationJob
     end
 
     LectureVideo.transaction do
-      # Create the lecture video
-      lecture_video = cohort.lecture_videos.create(title: video_title, presented_on: Date.today)
-
       Rails.logger.info "Uploading from --#{url}--"
+
+      # Create the lecture video
+      lecture_video = cohort.lecture_videos.create(title: video_title.strip, presented_on: Date.today)
 
       # Attach the video
       lecture_video.video.attach(
@@ -31,7 +31,12 @@ class LectureUploadJob < ApplicationJob
         content_type: "video/mp4"
       )
 
-      PylonBot.channel_message(channel: cohort.slack_channel_name, text: "New video posted to cohort playlist: #{video_title}")
+      begin
+        PylonBot.channel_message(channel: cohort.slack_channel_name, text: "New video posted to cohort playlist: #{video_title}")
+      rescue StandardError => exception
+        # Rescue any error from the pylon bot so the transaction doesn't fail, but do report it
+        Raven.capture_exception(exception)
+      end
     end
   end
 end
