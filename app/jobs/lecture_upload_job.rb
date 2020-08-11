@@ -18,16 +18,20 @@ class LectureUploadJob < ApplicationJob
       return
     end
 
-    # Create the lecture video
-    lecture_video = cohort.lecture_videos.create(title: video_title, presented_on: Date.today)
+    LectureVideo.transaction do
+      # Create the lecture video
+      lecture_video = cohort.lecture_videos.create(title: video_title, presented_on: Date.today)
 
-    # Attach the video
-    lecture_video.video.attach(
-      io: open(url),
-      filename: "lectures/#{cohort.name.parameterize}/#{video_title.parameterize}.mp4",
-      content_type: "video/mp4"
-    )
+      Rails.logger.info "Uploading from --#{url}--"
 
-    PylonBot.channel_message(channel: cohort.slack_channel_name, text: "New video posted to cohort playlist: #{video_title}")
+      # Attach the video
+      lecture_video.video.attach(
+        io: open(url),
+        filename: "lectures/#{cohort.name.parameterize}/#{video_title.parameterize}.mp4",
+        content_type: "video/mp4"
+      )
+
+      PylonBot.channel_message(channel: cohort.slack_channel_name, text: "New video posted to cohort playlist: #{video_title}")
+    end
   end
 end
