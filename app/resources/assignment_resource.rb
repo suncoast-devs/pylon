@@ -13,7 +13,7 @@ class AssignmentResource < ApplicationResource
   has_many :assignment_events
 
   attribute :overdue, :boolean do
-    Time.now.end_of_day > (@object.homework.due_at || @object.created_at + 1.day).beginning_of_day
+    Time.now.end_of_day > (@object.homework.due_at || @object.created_at + 1.day).end_of_day
   end
 
   def base_scope
