@@ -35,7 +35,10 @@ class AssignmentEventResource < ApplicationResource
           model.assignment.turned_in = false
         end
 
-        AssignmentGradedJob.perform_later(assignment: model.assignment)
+        AssignmentGradedJob.perform_later(person: model.assignment.person,
+                                          homework_title: model.assignment.homework.title,
+                                          marked: model.assignment.score_description,
+                                          issue_state: model.assignment.issue_state)
       else
         raise "ZOMG, NO"
       end

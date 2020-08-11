@@ -1,7 +1,7 @@
 class AssignmentGradedJob < ApplicationJob
   queue_as :default
 
-  def perform(assignment:)
-    PylonBot.message(assignment.person, %{Your homework *#{assignment.homework.title}* was marked *#{assignment.score_description}* and is now considered *#{assignment.issue_state}*})
+  def perform(person:, homework_title:, marked:, issue_state:)
+    PylonBot.message(person, %{Your homework *#{homework_title}* was marked *#{marked}* and is now considered *#{issue_state}*})
   end
 end
