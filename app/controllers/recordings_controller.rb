@@ -17,6 +17,6 @@ class RecordingsController < ApplicationController
 
     topic = object["topic"]
 
-    YoutubeUploadJob.perform_later(url: download_url.to_s, topic: topic)
+    LectureUploadJob.perform_later(url: download_url.to_s, topic: topic)
   end
 end

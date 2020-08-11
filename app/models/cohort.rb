@@ -10,6 +10,7 @@ class Cohort < ApplicationRecord
 
   has_many :homeworks
   has_many :progress_reports
+  has_many :lecture_videos
 
   validates :name, presence: true, uniqueness: true
 
@@ -17,6 +18,10 @@ class Cohort < ApplicationRecord
 
   def assigned_homework_marked_for_completion
     homeworks.where("assignments_count > 0").where(counts_towards_completion: true)
+  end
+
+  def slack_channel_name
+    name.parameterize
   end
 
   private
