@@ -26,7 +26,7 @@ class LectureUploadJob < ApplicationJob
 
       # Attach the video
       lecture_video.video.attach(
-        io: open(url),
+        io: Down.open(url),
         filename: "lectures/#{cohort.name.parameterize}/#{video_title.parameterize}.mp4",
         content_type: "video/mp4"
       )
