@@ -3,12 +3,12 @@ class LectureVideoResource < ApplicationResource
 
   attribute :title, :string
   attribute :presented_on, :date
-  attribute :created_at, :date
+  attribute :created_at, :datetime
   attribute :cohort_id, :integer
 
   attribute :video_url, :string do
     @object.video.service_url
-  rescue Module::DelegationError
+  rescue Module::DelegationError, URI::InvalidURIError
     ""
   end
 
