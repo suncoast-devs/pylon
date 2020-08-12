@@ -2,6 +2,8 @@ class LectureVideoResource < ApplicationResource
   belongs_to :cohort
 
   attribute :title, :string
+  attribute :presented_on, :date
+  attribute :created_at, :date
   attribute :cohort_id, :integer
 
   attribute :video_url, :string do
