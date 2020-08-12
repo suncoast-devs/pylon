@@ -10,6 +10,7 @@ class CohortResource < ApplicationResource
   has_many :progress_reports
   has_many :cohort_dates
   has_many :student_enrollments
+  has_many :lecture_videos
 
   many_to_many :people
 

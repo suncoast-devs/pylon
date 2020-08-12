@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :profiles
     resources :people
     resources :cohorts
+    resources :lecture_videos
     resources :units
     resources :programs
     resources :student_enrollments
