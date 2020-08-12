@@ -9,7 +9,7 @@ class LectureUploadJob < ApplicationJob
     end
 
     # Take the name of the playlist as what comes before the ':' and the title from what comes after
-    cohort_name, video_title = topic.split(":")
+    _, cohort_name, video_title = *topic.match(/(.*?):\s+(.*)/)
 
     cohort = Cohort.all.find { |cohort| cohort_name.parameterize.start_with?(cohort.name.parameterize) }
     unless cohort
