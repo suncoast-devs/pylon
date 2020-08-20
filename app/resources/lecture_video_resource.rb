@@ -7,13 +7,15 @@ class LectureVideoResource < ApplicationResource
   attribute :cohort_id, :integer
 
   attribute :video_url, :string do
-    @object.video.service_url
+    Rails.application.routes.url_helpers.rails_blob_path(@object.video, only_path: true)
   rescue Module::DelegationError, URI::InvalidURIError
     ""
   end
 
   attribute :video_file_name, :string do
     @object.video.filename.to_s
+  rescue Module::DelegationError
+    ""
   end
 
   def base_scope
