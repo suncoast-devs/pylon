@@ -12,6 +12,10 @@ class LectureVideoResource < ApplicationResource
     ""
   end
 
+  attribute :video_file_name, :string do
+    @object.video.filename.to_s
+  end
+
   def base_scope
     return LectureVideo.all if admin?
 
