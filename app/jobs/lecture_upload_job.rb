@@ -1,6 +1,5 @@
 class LectureUploadJob < ApplicationJob
   queue_as :default
-  retry_on
 
   # If we have a download error apply some retry logic
   retry_on(Down::ClientError, wait: 60.seconds, attempts: 5) do |job, error|
