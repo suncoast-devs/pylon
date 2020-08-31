@@ -1,5 +1,11 @@
 class LectureUploadJob < ApplicationJob
   queue_as :default
+  retry_on
+
+  # If we have a download error apply some retry logic
+  retry_on(Down::ClientError, wait: 60.seconds, attempts: 5) do |job, error|
+    Raven.capture_exception(exception)
+  end
 
   def perform(url:, topic:)
     # Unless there is a : in the topic, return
@@ -19,7 +25,7 @@ class LectureUploadJob < ApplicationJob
     end
 
     LectureVideo.transaction do
-      Rails.logger.info "Uploading from --#{url}--"
+      Rails.logger.info %{Uploading from "#{url}"}
 
       # Create the lecture video
       lecture_video = cohort.lecture_videos.create(title: video_title.strip, presented_on: Date.today)
