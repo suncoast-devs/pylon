@@ -1,7 +1,3 @@
-<div style="text-align: center; font-weight: bold">You Must Construct Additional Pylons</div>
-
----
-
 ## Contributing
 
 See the [Nexus](https://github.com/suncoast-devs/nexus) repository for instructions on setting up the UI portion of `nexus+pylon`.
@@ -10,3 +6,7 @@ See the [Nexus](https://github.com/suncoast-devs/nexus) repository for instructi
 - Run `bundle install` to ensure all gems are installed and present.
 - To get setup with a login, run `rails db:setup`.
 - Execute `rails server` to run the server on port `3000`. **NOTE** You should run this first and then run the client UI in a second session so the UI will run on port `3001`
+
+---
+
+_**You Must Construct Additional Pylons**_
