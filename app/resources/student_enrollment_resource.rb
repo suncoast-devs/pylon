@@ -22,6 +22,10 @@ class StudentEnrollmentResource < ApplicationResource
     @object.person.completed_assignments(@object.cohort_id).count
   end
 
+  extra_attribute :incomplete_homework_count, :integer do
+    @object.person.incomplete_assignments(@object.cohort_id).count
+  end
+
   extra_attribute :completion_percentage, :float do
     @object.completion_percentage
   end
