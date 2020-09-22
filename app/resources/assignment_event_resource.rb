@@ -38,7 +38,8 @@ class AssignmentEventResource < ApplicationResource
         AssignmentGradedJob.perform_later(person: model.assignment.person,
                                           homework_title: model.assignment.homework.title,
                                           marked: model.assignment.score_description,
-                                          issue_state: model.assignment.issue_state)
+                                          issue_state: model.assignment.issue_state,
+                                          comment: model.payload["comment"])
       else
         raise "ZOMG, NO"
       end
