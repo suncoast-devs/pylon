@@ -14,6 +14,10 @@ class HomeworkResource < ApplicationResource
   attribute :created_at, :datetime, writable: false
   attribute :updated_at, :datetime, writable: false
 
+  attribute :body_with_resolved_urls, :string do
+    body.gsub("[/", "[https://handbook.suncoast.io/")
+  end
+
   belongs_to :cohort
   has_many :assignments
 
