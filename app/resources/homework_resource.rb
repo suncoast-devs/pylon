@@ -15,7 +15,7 @@ class HomeworkResource < ApplicationResource
   attribute :updated_at, :datetime, writable: false
 
   attribute :body_with_resolved_urls, :string do
-    body.gsub("[/", "[https://handbook.suncoast.io/")
+    @object.body.gsub("(/", "(https://handbook.suncoast.io/")
   end
 
   belongs_to :cohort
