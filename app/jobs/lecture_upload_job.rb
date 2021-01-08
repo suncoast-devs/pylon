@@ -16,7 +16,7 @@ class LectureUploadJob < ApplicationJob
     # Take the name of the playlist as what comes before the ':' and the title from what comes after
     _, cohort_name, video_title = *topic.match(/(.*?):\s+(.*)/)
 
-    cohort = Cohort.all.find { |cohort| cohort_name.parameterize.start_with?(cohort.name.parameterize) }
+    cohort = Cohort.find_by(name: cohort_name)
     unless cohort
       Rails.logger.info "Did not upload a video as the topic did not match any cohort name"
 
