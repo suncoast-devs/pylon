@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :student_enrollments
     resources :progress_reports
     resources :student_progress_reports
+    resources :handbook_assignments
 
     resources :repositories, only: [:index]
     resources :gists, only: [:index]

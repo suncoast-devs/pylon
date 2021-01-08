@@ -1,0 +1,2 @@
+class HandbookAssignmentsController < GraphitiResourceController
+end

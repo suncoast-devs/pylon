@@ -53,3 +53,5 @@ gem "data_uri", "~> 0.1.0"
 gem "sentry-raven", "~> 2.9"
 
 gem "yt", "~> 0.33.0"
+
+gem "front_matter_parser", "~> 0.2.1"
