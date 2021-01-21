@@ -154,6 +154,6 @@ class ZoomWebhooksController < ApplicationController
                           ""
                         end
 
-    lecture.lecture_participant_events.create(event_type: event_type, name: participant[user_name], event_at: participant[participant_field])
+    lecture.lecture_participant_events.create(event_type: event_type, name: participant[:user_name], event_at: participant[participant_field])
   end
 end
