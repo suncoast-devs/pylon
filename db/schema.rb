@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_17_133154) do
+ActiveRecord::Schema.define(version: 2021_01_12_194747) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -71,6 +72,15 @@ ActiveRecord::Schema.define(version: 2020_07_17_133154) do
     t.index ["person_id"], name: "index_attendance_records_on_person_id"
   end
 
+  create_table "cohort", id: :serial, force: :cascade do |t|
+    t.text "name", null: false
+    t.text "description", null: false
+    t.date "startDate", null: false
+    t.date "endDate", null: false
+    t.integer "programId", null: false
+    t.index ["name"], name: "cohort_name_key", unique: true
+  end
+
   create_table "cohort_dates", force: :cascade do |t|
     t.bigint "cohort_id"
     t.date "day"
@@ -115,6 +125,33 @@ ActiveRecord::Schema.define(version: 2020_07_17_133154) do
     t.index ["cohort_id"], name: "index_homeworks_on_cohort_id"
   end
 
+  create_table "lecture_participant_events", force: :cascade do |t|
+    t.bigint "lecture_id", null: false
+    t.string "event_type"
+    t.string "name"
+    t.datetime "event_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lecture_id"], name: "index_lecture_participant_events_on_lecture_id"
+  end
+
+  create_table "lecture_videos", force: :cascade do |t|
+    t.string "title"
+    t.date "presented_on"
+    t.bigint "cohort_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cohort_id"], name: "index_lecture_videos_on_cohort_id"
+  end
+
+  create_table "lectures", force: :cascade do |t|
+    t.string "title"
+    t.bigint "cohort_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cohort_id"], name: "index_lectures_on_cohort_id"
+  end
+
   create_table "people", force: :cascade do |t|
     t.string "given_name", comment: "The person's first/given name"
     t.string "family_name", comment: "The person's last/family name"
@@ -130,6 +167,35 @@ ActiveRecord::Schema.define(version: 2020_07_17_133154) do
     t.string "slack_invite_code"
     t.string "slack_user"
     t.string "assignments_repo", default: "assignments"
+  end
+
+  create_table "person", id: :serial, force: :cascade do |t|
+    t.text "givenName", null: false
+    t.text "familyName", null: false
+    t.text "additionalName", null: false
+    t.text "honorificPrefix", null: false
+    t.text "honorificSuffix", null: false
+    t.text "nickname", null: false
+    t.text "fullName", null: false
+    t.text "shirtSize", null: false
+    t.text "dietaryNote", null: false
+    t.text "userId"
+    t.index ["userId"], name: "person_userId_key", unique: true
+  end
+
+  create_table "phoneNumber", id: :integer, default: -> { "nextval('phonenumber_id_seq'::regclass)" }, force: :cascade do |t|
+    t.integer "personId", null: false
+    t.text "label", null: false
+    t.text "tel", null: false
+    t.boolean "isSMSCapable", null: false
+  end
+
+  create_table "program", id: :serial, force: :cascade do |t|
+    t.text "title", null: false
+    t.text "identifier", null: false
+    t.text "description", null: false
+    t.index ["identifier"], name: "program_identifier_key", unique: true
+    t.index ["title"], name: "program_title_key", unique: true
   end
 
   create_table "programs", force: :cascade do |t|
@@ -202,10 +268,15 @@ ActiveRecord::Schema.define(version: 2020_07_17_133154) do
   add_foreign_key "assignments", "people"
   add_foreign_key "attendance_records", "cohort_dates"
   add_foreign_key "attendance_records", "people"
+  add_foreign_key "cohort", "program", column: "programId", name: "cohort_programid_fkey"
   add_foreign_key "cohort_dates", "cohorts"
   add_foreign_key "cohorts", "programs"
   add_foreign_key "emails", "people"
   add_foreign_key "homeworks", "cohorts"
+  add_foreign_key "lecture_participant_events", "lectures"
+  add_foreign_key "lecture_videos", "cohorts"
+  add_foreign_key "lectures", "cohorts"
+  add_foreign_key "phoneNumber", "person", column: "personId", name: "phonenumber_personid_fkey"
   add_foreign_key "progress_reports", "cohorts"
   add_foreign_key "student_enrollments", "cohorts"
   add_foreign_key "student_enrollments", "people"
