@@ -16,6 +16,8 @@ class LectureUploadJob < ApplicationJob
     # Take the name of the playlist as what comes before the ':' and the title from what comes after
     _, cohort_name, video_title = *topic.match(/(.*?):\s+(.*)/)
 
+    video_title.strip!
+
     cohort = Cohort.find_by(name: cohort_name)
     unless cohort
       Rails.logger.info "Did not upload a video as the topic did not match any cohort name"
@@ -26,8 +28,10 @@ class LectureUploadJob < ApplicationJob
     LectureVideo.transaction do
       Rails.logger.info %{Uploading from "#{url}"}
 
+      lecture = cohort.lectures.find_by(title: video_title)
+
       # Create the lecture video
-      lecture_video = cohort.lecture_videos.create(title: video_title.strip, presented_on: Date.today)
+      lecture_video = cohort.lecture_videos.create(lecture: lecture, title: video_title, presented_on: Date.today)
 
       # Attach the video
       lecture_video.video.attach(

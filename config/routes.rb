@@ -30,5 +30,8 @@ Rails.application.routes.draw do
   post "/login" => "session#create"
   get "/logout" => "session#destroy"
 
-  post "/new-recording" => "recordings#create"
+  post "/zoom-webhooks/new-recording" => "zoom_webhooks#new_recording"
+  post "/zoom-webhooks/new-meeting" => "zoom_webhooks#new_meeting"
+  post "/zoom-webhooks/participant-joined-meeting" => "zoom_webhooks#participant_joined_meeting"
+  post "/zoom-webhooks/participant-left-meeting" => "zoom_webhooks#participant_left_meeting"
 end
