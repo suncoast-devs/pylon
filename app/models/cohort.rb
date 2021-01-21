@@ -11,6 +11,7 @@ class Cohort < ApplicationRecord
   has_many :homeworks
   has_many :progress_reports
   has_many :lecture_videos
+  has_many :lectures
 
   validates :name, presence: true, uniqueness: true
 

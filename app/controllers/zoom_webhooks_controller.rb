@@ -24,19 +24,8 @@ class ZoomWebhooksController < ApplicationController
   #     }
   # }
   def new_meeting
-    topic = params.dig("payload", "object", "topic")
-
-    if topic
-      # Take the name of the playlist as what comes before the ':' and the title from what comes after
-      _, cohort_name, lecture_title = *topic.match(/(.*?):\s+(.*)/)
-
-      lecture_title.strip!
-
-      cohort = Cohort.find_by(name: cohort_name)
-      if cohort
-        cohort.lectures.create(title: lecture_title)
-      end
-    end
+    # Attempt to create this lecture if needed
+    find_or_create_lecture(params)
 
     head :ok
   end
@@ -126,32 +115,43 @@ class ZoomWebhooksController < ApplicationController
 
   private
 
-  def handle_participant_event(event_type)
+  def find_or_create_lecture(params)
     topic = params.dig("payload", "object", "topic")
-    participant = params.dig("payload", "object", "participant")
 
-    return unless topic && participant
+    return nil unless topic
 
     # Take the name of the playlist as what comes before the ':' and the title from what comes after
     _, cohort_name, lecture_title = *topic.match(/(.*?):\s+(.*)/)
 
+    return nil unless lecture_title
+
     lecture_title.strip!
 
     cohort = Cohort.find_by(name: cohort_name)
-    if cohort
-      lecture = cohort.lectures.find_by(title: lecture_title)
-      if lecture
-        participant_field = case event_type
-                            when "joined"
-                              "join_time"
-                            when "left"
-                              "leave_time"
-                            else
-                              ""
-                            end
 
-        lecture.lecture_participant_events.create(event_type: event_type, name: partipant[user_name], event_at: participant[participant_field])
-      end
-    end
+    return unless cohort
+
+    cohort.lectures.find_or_create_by(title: lecture_title)
+  end
+
+  def handle_participant_event(event_type)
+    lecture = find_or_create_lecture(params)
+
+    return unless lecture
+
+    participant = params.dig("payload", "object", "participant")
+
+    return unless participant
+
+    participant_field = case event_type
+                        when "joined"
+                          "join_time"
+                        when "left"
+                          "leave_time"
+                        else
+                          ""
+                        end
+
+    lecture.lecture_participant_events.create(event_type: event_type, name: partipant[user_name], event_at: participant[participant_field])
   end
 end
