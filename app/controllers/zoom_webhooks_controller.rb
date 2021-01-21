@@ -91,6 +91,8 @@ class ZoomWebhooksController < ApplicationController
   end
 
   def new_recording
+    find_or_create_lecture(params)
+
     token = params["download_token"]
 
     payload = params["payload"]
