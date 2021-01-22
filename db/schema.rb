@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_12_194747) do
+ActiveRecord::Schema.define(version: 2021_01_22_025558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -141,7 +141,9 @@ ActiveRecord::Schema.define(version: 2021_01_12_194747) do
     t.bigint "cohort_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "lecture_id"
     t.index ["cohort_id"], name: "index_lecture_videos_on_cohort_id"
+    t.index ["lecture_id"], name: "index_lecture_videos_on_lecture_id"
   end
 
   create_table "lectures", force: :cascade do |t|
@@ -275,6 +277,7 @@ ActiveRecord::Schema.define(version: 2021_01_12_194747) do
   add_foreign_key "homeworks", "cohorts"
   add_foreign_key "lecture_participant_events", "lectures"
   add_foreign_key "lecture_videos", "cohorts"
+  add_foreign_key "lecture_videos", "lectures"
   add_foreign_key "lectures", "cohorts"
   add_foreign_key "phoneNumber", "person", column: "personId", name: "phonenumber_personid_fkey"
   add_foreign_key "progress_reports", "cohorts"
