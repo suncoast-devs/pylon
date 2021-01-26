@@ -1,4 +1,6 @@
 class LectureVideoResource < ApplicationResource
+  include ActionView::Helpers::DateHelper
+
   belongs_to :cohort
 
   attribute :title, :string
@@ -6,8 +8,12 @@ class LectureVideoResource < ApplicationResource
   attribute :created_at, :datetime
   attribute :cohort_id, :integer
 
+  attribute :presented_ago, :string do
+    "#{distance_of_time_in_words(Time.now, @object.presented_on)} ago"
+  end
+
   attribute :video_url, :string do
-    Rails.application.routes.url_helpers.rails_blob_url(@object.video, host: ENV["DEFAULT_HOST"])
+    Rails.application.routes.url_helpers.rails_blob_url(@object.video, host: "localhost")
   rescue Module::DelegationError, URI::InvalidURIError
     ""
   end
