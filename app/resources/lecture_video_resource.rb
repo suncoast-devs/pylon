@@ -1,6 +1,4 @@
 class LectureVideoResource < ApplicationResource
-  include ActionView::Helpers::DateHelper
-
   belongs_to :cohort
 
   attribute :title, :string
@@ -9,7 +7,12 @@ class LectureVideoResource < ApplicationResource
   attribute :cohort_id, :integer
 
   attribute :presented_ago, :string do
-    "#{distance_of_time_in_words(Time.now, @object.presented_on)} ago"
+    days_ago = (Date.today - @object.presented_on).to_i
+    if days_ago < 2
+      "Recent"
+    else
+      "#{days_ago} #{"day".pluralize(days_ago)} ago"
+    end
   end
 
   attribute :video_url, :string do
