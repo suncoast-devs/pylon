@@ -13,7 +13,7 @@ class LectureVideoResource < ApplicationResource
   end
 
   attribute :video_url, :string do
-    Rails.application.routes.url_helpers.rails_blob_url(@object.video, host: "localhost")
+    Rails.application.routes.url_helpers.rails_blob_url(@object.video, host: ENV["DEFAULT_HOST"])
   rescue Module::DelegationError, URI::InvalidURIError
     ""
   end
