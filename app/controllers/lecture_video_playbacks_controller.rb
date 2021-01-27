@@ -1,0 +1,2 @@
+class LectureVideoPlaybacksController < GraphitiResourceController
+end

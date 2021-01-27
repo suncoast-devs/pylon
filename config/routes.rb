@@ -19,6 +19,7 @@ Rails.application.routes.draw do
 
     resources :repositories, only: [:index]
     resources :gists, only: [:index]
+    resources :lecture_video_playbacks, only: [:create]
   end
 
   get "/redeem" => "people#redeem"

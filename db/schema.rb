@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_22_025558) do
+ActiveRecord::Schema.define(version: 2021_01_27_033626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -133,6 +133,15 @@ ActiveRecord::Schema.define(version: 2021_01_22_025558) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["lecture_id"], name: "index_lecture_participant_events_on_lecture_id"
+  end
+
+  create_table "lecture_video_playbacks", force: :cascade do |t|
+    t.bigint "lecture_video_id"
+    t.bigint "person_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lecture_video_id"], name: "index_lecture_video_playbacks_on_lecture_video_id"
+    t.index ["person_id"], name: "index_lecture_video_playbacks_on_person_id"
   end
 
   create_table "lecture_videos", force: :cascade do |t|
