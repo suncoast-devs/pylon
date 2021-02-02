@@ -38,18 +38,22 @@ class LectureUploadJob < ApplicationJob
       # Create the lecture video
       lecture_video = cohort.lecture_videos.create(lecture: lecture, title: video_title, presented_on: Date.today)
 
-      # Attach the video
-      lecture_video.video.attach(
-        io: Down.open(url),
-        filename: "lectures/#{cohort.name.parameterize}/#{video_title.parameterize}.mp4",
-        content_type: "video/mp4"
-      )
+      if lecture_video.valid?
+        # Attach the video
+        lecture_video.video.attach(
+          io: Down.open(url),
+          filename: "lectures/#{cohort.name.parameterize}/#{video_title.parameterize}.mp4",
+          content_type: "video/mp4"
+        )
 
-      begin
-        PylonBot.channel_message(channel: cohort.slack_channel_name, text: "New video posted to cohort playlist: #{video_title}")
-      rescue StandardError => exception
-        # Rescue any error from the pylon bot so the transaction doesn't fail, but do report it
-        Raven.capture_exception(exception)
+        begin
+          PylonBot.channel_message(channel: cohort.slack_channel_name, text: "New video posted to cohort playlist: #{video_title}")
+        rescue StandardError => exception
+          # Rescue any error from the pylon bot so the transaction doesn't fail, but do report it
+          Raven.capture_exception(exception)
+        end
+      else
+        Rails.logger.info "Unable to create lecture video: #{lecture_video.errors.full_messages.to_sentence}"
       end
     end
   end
