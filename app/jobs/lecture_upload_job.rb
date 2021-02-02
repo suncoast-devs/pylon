@@ -7,6 +7,11 @@ class LectureUploadJob < ApplicationJob
   end
 
   def perform(url:, topic:)
+    if ENV["BLOCK_LECTURE_UPLOAD_JOB"]
+      Rails.logger.info "LectureUploadJob are currently blocked"
+      return
+    end
+
     # Unless there is a : in the topic, return
     unless topic.include?(":")
       Rails.logger.info "Did not upload a video, URL and topic redacted"
