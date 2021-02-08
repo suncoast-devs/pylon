@@ -4,11 +4,11 @@ class StudentEnrollment < ApplicationRecord
 
   before_create :ensure_invitation_code
 
-  def self.assign_homework
+  def self.can_be_assigned_homework
     where(active: true)
   end
 
-  def assign_homework
+  def can_be_assigned_assigned_homework
     active
   end
 

@@ -6,8 +6,8 @@ class StudentEnrollmentResource < ApplicationResource
   attribute :active, :boolean
   attribute :auditing, :boolean
 
-  attribute :assign_homework, :boolean do
-    @object.assign_homework
+  attribute :can_be_assigned_homework, :boolean do
+    @object.can_be_assigned_homework
   end
 
   attribute :show_grade, :boolean do
