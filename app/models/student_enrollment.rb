@@ -8,7 +8,7 @@ class StudentEnrollment < ApplicationRecord
     where(active: true)
   end
 
-  def can_be_assigned_assigned_homework
+  def can_be_assigned_homework
     active
   end
 
