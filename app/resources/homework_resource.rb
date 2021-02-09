@@ -26,7 +26,7 @@ class HomeworkResource < ApplicationResource
 
   after_save do |model|
     # If we are assigning, or re-assigning this homework, then create the needed assignments
-    if mode.reassigned || (model.assigned && model.assigned_previously_changed?)
+    if model.reassigned || (model.assigned && model.assigned_previously_changed?)
       HomeworkAssignedJob.perform_later(homework: model)
     end
   end
