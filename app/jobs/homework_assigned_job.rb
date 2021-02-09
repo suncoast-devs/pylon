@@ -1,6 +1,8 @@
 class HomeworkAssignedJob < ApplicationJob
   queue_as :default
 
+  NEXUS_BASE_URL = ENV["NEXUS_BASE_URL"]
+
   def perform(homework:)
     homework.cohort.student_enrollments.can_be_assigned_homework.includes(:person).each do |enrollment|
       homework.assignments.find_or_create_by(person: enrollment.person) do |assignment|
