@@ -10,7 +10,7 @@ class HomeworkAssignedJob < ApplicationJob
       # TODO: Use previously_new_record? when we update to Rails 6.1
       homework.assignments.find_or_initialize_by(person: enrollment.person) do |assignment|
         assignment.save
-        PylonBot.message(enrollment.person, %{You have a new assignment: *"#{homework.title}"*: #{NEXUS_BASE_URL}/assignments/#{assignment.id}})
+        PylonBot.message(enrollment.person, %{You have a new assignment: *"#{homework.title}"*: #{NEXUS_BASE_URL}/assignment/#{assignment.id}})
       end
     end
   end
