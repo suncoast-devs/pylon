@@ -28,8 +28,8 @@ class LectureVideoResource < ApplicationResource
   end
 
   def base_scope
-    return LectureVideo.all if admin?
+    return LectureVideo.all.with_attached_video if admin?
 
-    LectureVideo.where(cohort_id: current_user.cohorts.pluck(:id))
+    LectureVideo.where(cohort_id: current_user.cohorts.pluck(:id)).with_attached_video
   end
 end
