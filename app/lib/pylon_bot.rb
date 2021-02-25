@@ -8,10 +8,8 @@ class PylonBot < SlackRubyBot::Bot
       return { "ok" => false }
     end
 
-    message = { text: text }
-
-    im = client.im_open(user: person.slack_user)
-    channel = im["channel"]["id"]
+    conversation = client.conversations_open(users: person.slack_user)
+    channel = conversation["channel"]["id"]
 
     client.chat_postMessage({ text: text, channel: channel, as_user: true })
   end
