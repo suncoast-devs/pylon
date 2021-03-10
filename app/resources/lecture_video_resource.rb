@@ -17,7 +17,7 @@ class LectureVideoResource < ApplicationResource
 
   attribute :video_url, :string do
     Rails.application.routes.url_helpers.rails_blob_url(@object.video, host: ENV["DEFAULT_HOST"])
-  rescue Module::DelegationError, URI::InvalidURIError
+  rescue ArgumentError, Module::DelegationError, URI::InvalidURIError
     ""
   end
 
@@ -28,8 +28,7 @@ class LectureVideoResource < ApplicationResource
   end
 
   def base_scope
-    return LectureVideo.all.with_attached_video if admin?
-
-    LectureVideo.where(cohort_id: current_user.cohorts.pluck(:id)).with_attached_video
+    # Let anyone view any lecture video if they know the id - YOLO
+    LectureVideo.all.with_attached_video
   end
 end
