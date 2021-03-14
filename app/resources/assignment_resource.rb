@@ -4,10 +4,12 @@ class AssignmentResource < ApplicationResource
   attribute :issue, :integer
   attribute :homework_id, :integer
   attribute :person_id, :integer
+  attribute :student_enrollment_id, :integer
   attribute :turned_in, :boolean
   attribute :created_at, :datetime, writable: false
   attribute :updated_at, :datetime, writable: false
 
+  belongs_to :student_enrollment
   belongs_to :homework
   belongs_to :person
   has_many :assignment_events

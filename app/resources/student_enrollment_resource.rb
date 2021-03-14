@@ -18,24 +18,19 @@ class StudentEnrollmentResource < ApplicationResource
     @object.generate_progress_report
   end
 
-  extra_attribute :completed_homework_count, :integer do
-    @object.person.completed_assignments(@object.cohort_id).count
-  end
+  attribute :completed_assignments_count, :integer, writable: false
 
-  extra_attribute :incomplete_homework_count, :integer do
-    @object.person.incomplete_assignments(@object.cohort_id).count
-  end
-
-  extra_attribute :completion_percentage, :float do
+  attribute :completion_percentage, :float do
     @object.completion_percentage
   end
 
-  extra_attribute :needed_to_complete_count, :integer do
+  attribute :needed_to_complete_count, :integer do
     @object.needed_to_complete_count
   end
 
   belongs_to :cohort
   belongs_to :person
+  has_many :assignments
 
   def base_scope
     return StudentEnrollment.all.includes(:person, :cohort) if admin?

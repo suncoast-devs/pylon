@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_08_205715) do
+ActiveRecord::Schema.define(version: 2021_03_13_203908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2021_02_08_205715) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "turned_in", default: false
+    t.integer "student_enrollment_id"
     t.index ["homework_id", "person_id"], name: "index_assignments_on_homework_id_and_person_id", unique: true
     t.index ["homework_id"], name: "index_assignments_on_homework_id"
     t.index ["person_id"], name: "index_assignments_on_person_id"
@@ -97,6 +98,7 @@ ActiveRecord::Schema.define(version: 2021_02_08_205715) do
     t.date "start_date"
     t.date "end_date"
     t.bigint "program_id"
+    t.integer "assigned_homework_marked_for_completion_count", default: 0
     t.index ["program_id"], name: "index_cohorts_on_program_id"
   end
 
@@ -238,6 +240,7 @@ ActiveRecord::Schema.define(version: 2021_02_08_205715) do
     t.string "invitation_code"
     t.boolean "active", default: true
     t.boolean "auditing", default: false
+    t.integer "completed_assignments_count"
     t.index ["cohort_id"], name: "index_student_enrollments_on_cohort_id"
     t.index ["person_id"], name: "index_student_enrollments_on_person_id"
   end

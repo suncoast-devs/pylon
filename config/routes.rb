@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     resources :student_progress_reports
     resources :handbook_assignments
 
+    resources :gradebooks, only: [:index]
+
     resources :repositories, only: [:index]
     resources :gists, only: [:index]
     resources :lecture_video_playbacks, only: [:create]

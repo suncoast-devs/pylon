@@ -88,6 +88,9 @@ GEM
     choice (0.2.0)
     concurrent-ruby (1.1.8)
     console (1.8.1)
+    counter_culture (2.7.0)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
     crass (1.0.6)
     data_uri (0.1.0)
     dotenv (2.7.5)
@@ -290,6 +293,7 @@ DEPENDENCIES
   async-websocket (~> 0.8.0)
   awesome_print (~> 1.8)
   aws-sdk-s3
+  counter_culture (~> 2.7)
   data_uri (~> 0.1.0)
   dotenv-rails (~> 2.6)
   down (~> 4.8)

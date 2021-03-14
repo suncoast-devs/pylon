@@ -3,6 +3,7 @@ class CohortResource < ApplicationResource
   attribute :start_date, :date
   attribute :end_date, :date
   attribute :program_id, :integer
+  attribute :assigned_homework_marked_for_completion_count, :integer
 
   belongs_to :program
 

@@ -1,0 +1,2 @@
+class GradebooksController < GraphitiResourceController
+end
