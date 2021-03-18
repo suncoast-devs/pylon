@@ -4,7 +4,7 @@ class Homework < ApplicationRecord
                   column_names: {
                     ["homeworks.assignments_count > 0 AND counts_towards_completion = true "] => "assigned_homework_marked_for_completion_count"
                   },
-                  column_name: proc { |homework| homework.assignments_count > 0 && homework.counts_towards_completion? ? "assigned_homework_marked_for_completion_count" : nil }
+                  column_name: proc { |homework| homework.assignments_count && homework.assignments_count > 0 && homework.counts_towards_completion? ? "assigned_homework_marked_for_completion_count" : nil }
 
   has_many :assignments
 
