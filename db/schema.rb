@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_13_203908) do
+ActiveRecord::Schema.define(version: 2021_03_18_222119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -120,7 +120,7 @@ ActiveRecord::Schema.define(version: 2021_03_13_203908) do
     t.bigint "cohort_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "assignments_count"
+    t.integer "assignments_count", default: 0
     t.string "turn_in_type"
     t.datetime "due_at"
     t.boolean "assigned", default: false
