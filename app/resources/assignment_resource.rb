@@ -14,6 +14,10 @@ class AssignmentResource < ApplicationResource
   belongs_to :person
   has_many :assignment_events
 
+  attribute :completed, :boolean do
+    @object.score >= Assignment::ACCEPTABLE
+  end
+
   attribute :overdue, :boolean do
     Time.now.end_of_day > (@object.homework.due_at || @object.created_at + 1.day).end_of_day
   end
