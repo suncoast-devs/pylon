@@ -6,7 +6,7 @@ class Homework < ApplicationRecord
                   },
                   column_name: proc { |homework| homework.assignments_count && homework.assignments_count > 0 && homework.counts_towards_completion? ? "assigned_homework_marked_for_completion_count" : nil }
 
-  has_many :assignments
+  has_many :assignments, dependent: :destroy
 
   # Virtual attribute to use to re-assign an assignment
   attr_accessor :reassigned
