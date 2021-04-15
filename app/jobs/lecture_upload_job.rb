@@ -12,14 +12,12 @@ class LectureUploadJob < ApplicationJob
       return
     end
 
-    # Unless there is a : in the topic, return
-    unless topic.include?(":")
+    cohort_name, video_title = Lecture.split_zoom_topic(topic)
+
+    unless cohort_name && video_title
       Rails.logger.info "Did not upload a video, URL and topic redacted"
       return
     end
-
-    # Take the name of the playlist as what comes before the ':' and the title from what comes after
-    _, cohort_name, video_title = *topic.match(/(.*?):\s+(.*)/)
 
     video_title.strip!
 

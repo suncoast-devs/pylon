@@ -25,7 +25,17 @@ class ZoomWebhooksController < ApplicationController
   # }
   def new_meeting
     # Attempt to create this lecture if needed
-    find_or_create_lecture(params)
+    lecture = find_or_create_lecture(params)
+
+    # Announce the lecture if one can be found
+    if lecture
+      begin
+        PylonBot.channel_message(channel: lecture.cohort.slack_channel_name, text: "New lecture started: #{lecture.title}")
+      rescue StandardError => exception
+        # Rescue any error from the pylon bot so the transaction doesn't fail, but do report it
+        Raven.capture_exception(exception)
+      end
+    end
 
     head :ok
   end
@@ -122,8 +132,8 @@ class ZoomWebhooksController < ApplicationController
 
     return nil unless topic
 
-    # Take the name of the playlist as what comes before the ':' and the title from what comes after
-    _, cohort_name, lecture_title = *topic.match(/(.*?):\s+(.*)/)
+    # Take the name of the playlist as what comes before the ':' or '-' and the title from what comes after
+    cohort_name, lecture_title = Lecture.split_zoom_topic(topic)
 
     return nil unless lecture_title
 
