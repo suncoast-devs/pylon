@@ -19,8 +19,6 @@ class LectureUploadJob < ApplicationJob
       return
     end
 
-    video_title.strip!
-
     cohort = Cohort.find_by(name: cohort_name)
     unless cohort
       Rails.logger.info "Did not upload a video as the topic did not match any cohort name"

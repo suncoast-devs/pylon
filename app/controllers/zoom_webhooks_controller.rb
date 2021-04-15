@@ -137,8 +137,6 @@ class ZoomWebhooksController < ApplicationController
 
     return nil unless lecture_title
 
-    lecture_title.strip!
-
     cohort = Cohort.find_by(name: cohort_name)
 
     return unless cohort
