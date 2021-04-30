@@ -14,7 +14,7 @@ class PylonBot < SlackRubyBot::Bot
     client.chat_postMessage({ text: text, channel: channel, as_user: true })
   end
 
-  def self.channel_message(channel: channel, text: text)
+  def self.channel_message(channel:, text:)
     client.chat_postMessage(channel: channel, text: text, as_user: true)
   end
 
