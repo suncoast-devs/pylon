@@ -111,7 +111,11 @@ class ZoomWebhooksController < ApplicationController
     object = payload["object"]
     return unless object
 
-    recording = object["recording_files"].find { |recording| recording["recording_type"] == "shared_screen_with_speaker_view" }
+    # Look through all of the recording files
+    # considering only mp4 videos and choose
+    # the largest file size recording.
+    recording = object["recording_files"].select { |recording_file| recording_file["file_type"].downcase == "mp4" }.
+      max_by { |recording_file| recording_file["file_size"] }
     return unless recording
 
     uri = recording["download_url"]
