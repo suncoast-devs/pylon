@@ -5,7 +5,7 @@ default: &default
 
 development:
   <<: *default
-  database: pylon_prod_copy3
+  database: pylon_prod_copy4
   # database: pylon
 
 test:
