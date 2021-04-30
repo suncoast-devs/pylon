@@ -196,7 +196,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_222119) do
     t.index ["userId"], name: "person_userId_key", unique: true
   end
 
-  create_table "phoneNumber", id: :integer, default: -> { "nextval('phonenumber_id_seq'::regclass)" }, force: :cascade do |t|
+  create_table "phoneNumber", id: :serial, force: :cascade do |t|
     t.integer "personId", null: false
     t.text "label", null: false
     t.text "tel", null: false
