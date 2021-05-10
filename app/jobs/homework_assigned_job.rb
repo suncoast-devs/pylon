@@ -14,5 +14,9 @@ class HomeworkAssignedJob < ApplicationJob
         PylonBot.message(enrollment.person, %{You have a new assignment: *"#{homework.title}"*: #{NEXUS_BASE_URL}/assignment/#{assignment.id}})
       end
     end
+
+    # Ensure all counters are correct
+    Homework.counter_culture_fix_counts
+    Assignment.counter_culture_fix_counts
   end
 end
