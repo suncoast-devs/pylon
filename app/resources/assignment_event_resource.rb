@@ -20,6 +20,9 @@ class AssignmentEventResource < ApplicationResource
 
     if model.name == "turnin"
       model.assignment.turned_in = true
+
+      # Remove any score so that the homework appears as un-graded
+      model.assignment.score = nil
     end
 
     if model.name == "reopen"
